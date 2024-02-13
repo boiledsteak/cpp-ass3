@@ -13,136 +13,157 @@
 
 using namespace std;
 
-class Point2D {
-protected:
-    int x;
-    int y;
-    double distFrOrigin;
+class Point2D 
+{
+    protected:
+        int x;
+        int y;
+        double distFrOrigin;
 
-protected:
-    // Setter for distFrOrigin
-    void setDistFrOrigin() {
-        distFrOrigin = calculateDistance();
-    }
-    // Calculate distance from origin
-    double calculateDistance() const {
-        // return sqrt(x * x + y * y);
-        return 2.2; // Placeholder value
-    }
+    protected:
+        // Setter for distFrOrigin
+        void setDistFrOrigin() 
+        {
+            distFrOrigin = calculateDistance();
+        }
+        // Calculate distance from origin
+        double calculateDistance() const 
+        {
+            return sqrt(x * x + y * y);
+        }
 
-public:
-    // Constructor
-    Point2D(int x_val, int y_val) : x(x_val), y(y_val) {
-        // distFrOrigin = calculateDistance();
-    }
+    public:
+        // Constructor
+        Point2D(int x_val, int y_val) : x(x_val), y(y_val) 
+        {
+            // distFrOrigin = calculateDistance();
+        }
 
-    // Getter for x
-    int getX() const {
-        return x;
-    }
+        // Getter for x
+        int getX() const 
+        {
+            return x;
+        }
 
-    // Getter for y
-    int getY() const {
-        return y;
-    }
+        // Getter for y
+        int getY() const 
+        {
+            return y;
+        }
 
-    // Getter for distFrOrigin
-    double getScalarValue() const {
-        return distFrOrigin;
-    }
+        // Getter for distFrOrigin
+        double getScalarValue() const 
+        {
+            return distFrOrigin;
+        }
 
-    // Setter for x
-    void setX(int x_val) {
-        x = x_val;
-        // distFrOrigin = calculateDistance();
-    }
+        // Setter for x
+        void setX(int x_val) 
+        {
+            x = x_val;
+            // distFrOrigin = calculateDistance();
+        }
 
-    // Setter for y
-    void setY(int y_val) {
-        y = y_val;
-        // distFrOrigin = calculateDistance();
-    }
+        // Setter for y
+        void setY(int y_val) 
+        {
+            y = y_val;
+            // distFrOrigin = calculateDistance();
+        }
 };
 
-class Line2D {
-private:
-    Point2D pt1;
-    Point2D pt2;
+class Line2D 
+{
+    private:
+        Point2D pt1;
+        Point2D pt2;
 
-protected:
-    double length;
+    protected:
+        double length;
 
-protected:
-    void setLength() {
-        length = calculateLength();
-    }
+    protected:
+        void setLength() 
+        {
+            length = calculateLength();
+        }
 
-    // Calculate length of the line
-    double calculateLength() const {
-        // int deltaX = pt1.getX() - pt2.getX();
-        // int deltaY = pt1.getY() - pt2.getY();
-        // return sqrt(deltaX * deltaX + deltaY * deltaY);
-        return 2.2; // Placeholder value
-    }
+        // Calculate length of the line
+        double calculateLength() const 
+        {
+            int deltaX = pt1.getX() - pt2.getX();
+            int deltaY = pt1.getY() - pt2.getY();
+            return sqrt(deltaX * deltaX + deltaY * deltaY);
+        }
 
-public:
-    // Constructor
-    Line2D(Point2D pt1_val, Point2D pt2_val) : pt1(pt1_val), pt2(pt2_val) {
-        length = calculateLength();
-    }
+    public:
+        // Constructor
+        Line2D(Point2D pt1_val, Point2D pt2_val) : pt1(pt1_val), pt2(pt2_val) 
+        {
+            length = calculateLength();
+        }
 
-    // Getter for pt1
-    Point2D getPt1() const {
-        return pt1;
-    }
+        // Getter for pt1
+        Point2D getPt1() const 
+        {
+            return pt1;
+        }
 
-    // Getter for pt2
-    Point2D getPt2() const {
-        return pt2;
-    }
+        // Getter for pt2
+        Point2D getPt2() const 
+        {
+            return pt2;
+        }
 
-    // Getter for length
-    double getScalarValue() const {
-        return length;
-    }
+        // Getter for length
+        double getScalarValue() const 
+        {
+            return length;
+        }
 
-    // Setter for pt1
-    void setPt1(Point2D pt1_val) {
-        pt1 = pt1_val;
-        // length = calculateLength();
-    }
+        // Setter for pt1
+        void setPt1(Point2D pt1_val) 
+        {
+            pt1 = pt1_val;
+            // length = calculateLength();
+        }
 
-    // Setter for pt2
-    void setPt2(Point2D pt2_val) {
-        pt2 = pt2_val;
-        // length = calculateLength();
-    }
+        // Setter for pt2
+        void setPt2(Point2D pt2_val) 
+        {
+            pt2 = pt2_val;
+            // length = calculateLength();
+        }
 };
 
-class Point3D : public Point2D {
-private:
-    int z;
+class Point3D : public Point2D 
+{
+    private:
+        int z;
+        //inherited member x. shares same value as Point2D. changes in here, will change there
+        //inherited member y. shares same value as Point2D. changes in here, will change there
+        //inherited member distFrOrigin. shares same value as parent class distFrOrigin. parent class being Point2D. shares same value as Point2D. changes in here, will change there
 
-public:
-    // Constructor
-    Point3D(int x_val, int y_val, int z_val) : Point2D(x_val, y_val), z(z_val) {}
+    public:
+        // Constructor
+        Point3D(int x_val, int y_val, int z_val) : Point2D(x_val, y_val), z(z_val) {}
 
-    // Getter for z
-    int getZ() const {
-        return z;
-    }
+        // Getter for z
+        int getZ() const 
+        {
+            return z;
+        }
 
-    // Setter for z
-    void setZ(int z_val) {
-        z = z_val;
-    }
+        // Setter for z
+        void setZ(int z_val) 
+        {
+            z = z_val;
+        }
 
-    // Method to calculate distance from origin
-    void setDistFrOrigin() {
-        // double distFrOrigin = sqrt(x * x + y * y + z * z);
-        // cout << "Distance from origin: " << distFrOrigin << endl;
-        double distFrOrigin = 2.2; // Placeholder
-    }
+        // Method to calculate distance from origin
+        void setDistFrOrigin() 
+        {
+            double distFrOrigin = sqrt(x * x + y * y + z * z);        
+        }
 };
 
 class Line3D : public Line2D 
@@ -150,41 +171,49 @@ class Line3D : public Line2D
     private:
         Point3D pt1;
         Point3D pt2;
+        //inherited member of length from Line2D. Shares same value of length as Line2D. shares same value as Line2D. changes in here, will change there
+        // TODO - to understand : what is the purpose of member hiding ???
 
     protected:
         // Method to set the length
-        void setLength() {
+        void setLength() 
+        {
             double length = calculateLength();
         }
 
         // Calculate length of the line
-        double calculateLength() const {
+        double calculateLength() const 
+        {
             // int deltaX = pt1.getZ() - pt2.getZ();
             // return abs(deltaX); // Absolute value is considered as the distance in 3D space.
             return 2.2; // Placeholder value
         }
 
     public:
-        // Constructor
+        // Constructor. Line3D inherits all the members of Line2D
         Line3D(Point3D pt1_val, Point3D pt2_val) : Line2D(Point2D(0,0), Point2D(0,0)), pt1(pt1_val), pt2(pt2_val) {}
 
         // Getter for pt1
-        Point3D getPt1() const {
+        Point3D getPt1() const 
+        {
             return pt1;
         }
 
         // Getter for pt2
-        Point3D getPt2() const {
+        Point3D getPt2() const 
+        {
             return pt2;
         }
 
         // Setter for pt1
-        void setPt1(Point3D pt1_val) {
+        void setPt1(Point3D pt1_val) 
+        {
             pt1 = pt1_val;
         }
 
         // Setter for pt2
-        void setPt2(Point3D pt2_val) {
+        void setPt2(Point3D pt2_val) 
+        {
             pt2 = pt2_val;
         }
 };
