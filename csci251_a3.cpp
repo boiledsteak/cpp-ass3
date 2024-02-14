@@ -1,6 +1,8 @@
 // due 28 Feb
-// STL means standard library
+// STL means standard template library
 // see slides S5B for template concept
+// function template ability : pass the datatype as a parameter and return different data type based on parameter
+// It is possible in C++ to get a special behavior for a particular data type. This is called template specialization
 #include <iostream>
 #include <utility>
 #include <vector>
@@ -9,10 +11,16 @@
 #include <algorithm>
 #include <typeinfo>
 #include <limits>
+#include <iomanip>
+#include <fstream>
+#include <sstream>
+#include <cerrno> 
+#include <cstring>  
 
 
 using namespace std;
 
+// class declarations
 class Point2D 
 {
     protected:
@@ -29,7 +37,7 @@ class Point2D
         // Calculate distance from origin
         double calculateDistance() const 
         {
-            return sqrt(x * x + y * y);
+            return sqrt((x * x) + (y * y));
         }
 
     public:
@@ -172,7 +180,6 @@ class Line3D : public Line2D
         Point3D pt1;
         Point3D pt2;
         //inherited member of length from Line2D. Shares same value of length as Line2D. shares same value as Line2D. changes in here, will change there
-        // TODO - to understand : what is the purpose of member hiding ???
 
     protected:
         // Method to set the length
@@ -184,9 +191,11 @@ class Line3D : public Line2D
         // Calculate length of the line
         double calculateLength() const 
         {
-            // int deltaX = pt1.getZ() - pt2.getZ();
-            // return abs(deltaX); // Absolute value is considered as the distance in 3D space.
-            return 2.2; // Placeholder value
+            return sqrt(
+                ((pt1.getX()-pt2.getX())*(pt1.getX()-pt2.getX())) +
+                ((pt1.getY()-pt2.getY())*(pt1.getY()-pt2.getY())) +
+                ((pt1.getZ()-pt2.getZ())*(pt1.getZ()-pt2.getZ()))
+                );
         }
 
     public:
@@ -217,6 +226,34 @@ class Line3D : public Line2D
             pt2 = pt2_val;
         }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+// I/O manipulators
+// formats to 2 Decimal places
+ostream& twodec(ostream& os) 
+{
+    os << fixed << setprecision(2);
+    return os;
+}
+
+// formats to 3 Decimal places
+ostream& threedec(ostream& os) 
+{
+    os << fixed << setprecision(3);
+    return os;
+}
+
 
 
 
@@ -260,12 +297,40 @@ int main()
         {
             case 1:
             {
-                cout << ">>>>>>>>>>>>\t"<< "Option\t" << menuchoice << "\t>>>>>>>>>>>>\n\n";
-                cout << "Please enter filename";
+                string filename;
+                string line;
                 
 
+                cout << ">>>>>>>>>>>>\t" << "Option\t" << menuchoice << "\t>>>>>>>>>>>>\n\n";
+                cout << "Please enter filename: ";                
+                // cin >> filename; // No input validation for filename
+                filename = "messy.txt";
+                fstream file(filename, ios::in);
+                if (file.is_open()) 
+                {
+                    while (getline(file >> ws, line)) 
+                    {
+                        istringstream iss(line);
+                        int num;
+                        while (iss >> num) 
+                        {
+                            cout << "Read number: " << num << endl;
+                        }
+                    }
+
+                    file.close();
+                }
+                else 
+                {
+                    cout << filename << "\n";
+                    cerr << "Failed to open the file." << endl;
+                    cerr << "Error code: " << errno << ", " << strerror(errno) << endl;
+                }
             }
             break;
+
+
+
             case 2:
             {
                 cout << "hullo !";
