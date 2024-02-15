@@ -228,7 +228,39 @@ class Line3D : public Line2D
 };
 
 
+// points namespace is to use << for Point3D or Point2D
+namespace points
+{
+    // Overloading << for PointType. Formats the coordinates nicely
+    template<typename PointType>
+    ostream& operator<<(ostream& os, const PointType& point) 
+    {
+        os << "["
+        << setw(4) << right << static_cast<int>(point.getX()) << ", "
+        << setw(4) << right << static_cast<int>(point.getY());  // <--- Add semicolon here
 
+        // For Point3D, also include the z-coordinate
+        if constexpr (is_same_v<PointType, Point3D>) 
+        {
+            os << ", " << setw(4) << right << static_cast<int>(point.getZ());
+        }
+
+        os << "]";
+        return os;
+    }
+}
+
+// lines namespace is to use << for Line3D and Line2D
+namespace lines 
+{
+    // Define operator<< for Line3D and Line2D
+    template<typename LineType>
+    ostream& operator<<(ostream& os, const LineType& line) 
+    {
+        os << "[" << line.getPt1() << "]   [" << line.getPt2() << "]";
+        return os;
+    }
+}
 
 
 
