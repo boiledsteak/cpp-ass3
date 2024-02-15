@@ -20,7 +20,7 @@
 
 using namespace std;
 
-// class declarations
+// ----------------------------------------------------class declarations
 class Point2D 
 {
     protected:
@@ -77,6 +77,12 @@ class Point2D
         {
             y = y_val;
             // distFrOrigin = calculateDistance();
+        }
+
+        // Overload == operator for Point2D
+        bool operator==(const Point2D& other) const 
+        {
+            return x == other.x && y == other.y;
         }
 };
 
@@ -227,20 +233,24 @@ class Line3D : public Line2D
         }
 };
 
+// ----------------------------------------------------operator overloads
 
-// points namespace is to use << for Point3D or Point2D
 namespace points
 {
+    using std::ostream;
+    using std::setw;
+    using std::right;
+
     // Overloading << for PointType. Formats the coordinates nicely
     template<typename PointType>
     ostream& operator<<(ostream& os, const PointType& point) 
     {
         os << "["
-        << setw(4) << right << static_cast<int>(point.getX()) << ", "
-        << setw(4) << right << static_cast<int>(point.getY());  // <--- Add semicolon here
+           << setw(4) << right << static_cast<int>(point.getX()) << ", "
+           << setw(4) << right << static_cast<int>(point.getY());  
 
         // For Point3D, also include the z-coordinate
-        if constexpr (is_same_v<PointType, Point3D>) 
+        if constexpr (std::is_same_v<PointType, Point3D>) 
         {
             os << ", " << setw(4) << right << static_cast<int>(point.getZ());
         }
@@ -248,21 +258,59 @@ namespace points
         os << "]";
         return os;
     }
-}
 
-// lines namespace is to use << for Line3D and Line2D
-namespace lines 
-{
-    // Define operator<< for Line3D and Line2D
-    template<typename LineType>
-    ostream& operator<<(ostream& os, const LineType& line) 
+    // Overloading == for PointType. Allows obj == obj for Point2D or Point3D
+    template<typename PointType>
+    bool operator==(const PointType& p1, const PointType& p2)
     {
-        os << "[" << line.getPt1() << "]   [" << line.getPt2() << "]";
-        return os;
+        bool answer;
+        answer = p1.getX() == p2.getX() && p1.getY() == p2.getY();
+
+        // For Point3D, also include the z-coordinate
+        if constexpr (std::is_same_v<PointType, Point3D>) 
+        {
+            answer = p1.getX() == p2.getX() && p1.getY() == p2.getY() && p1.getZ() == p2.getZ();
+        }
+
+        return answer;
     }
 }
 
 
+namespace lines 
+{
+    // Define operator<< for Line3D and Line2D
+    template<typename LineType>
+    std::ostream& operator<<(std::ostream& os, const LineType& line) 
+    {
+        os << "[" << line.getPt1() << "]   [" << line.getPt2() << "]";
+        return os;
+    }
+
+    // Overloading == for LineType. Allows obj == obj for Line2D or Line3D
+    template<typename LineType>
+    bool operator==(const LineType& line1, const LineType& line2)
+    {
+        return line1.getPt1() == line2.getPt1() && line1.getPt2() == line2.getPt2();
+    }
+}
+
+
+// ----------------------------------------------------other template functions
+
+// Template function to calculate the absolute difference between two scalar values
+template<typename T1, typename T2>
+double scalar_difference(const T1& value1, const T2& value2) 
+{
+    return abs(value1 - value2);
+}
+
+// Template function to check equality of two parameters
+template<typename T>
+bool equals(const T& value1, const T& value2) 
+{
+    return value1 == value2;
+}
 
 
 
@@ -270,8 +318,7 @@ namespace lines
 
 
 
-
-// I/O manipulators
+// ----------------------------------------------------IO manipulators
 // formats to 2 Decimal places
 ostream& twodec(ostream& os) 
 {
