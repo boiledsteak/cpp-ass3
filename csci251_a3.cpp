@@ -17,6 +17,8 @@
 #include <cerrno> 
 #include <cstring>  
 #include <set>
+#include <memory>
+#include <variant>
 
 
 using namespace std;
@@ -327,7 +329,33 @@ bool equals(const T& value1, const T& value2)
     return value1 == value2;
 }
 
-
+template<typename PointType>
+vector<PointType> createPointObjects(const vector<string>& lines) 
+{
+    vector<PointType> pointObjects;
+    for (const string& line : lines) {
+        istringstream iss(line);
+        string objectType;
+        iss >> objectType;
+        if (objectType == typeid(PointType).name()) 
+        {
+            int x, y;
+            char comma;
+            iss >> comma >> x >> comma >> y >> comma;
+            if constexpr (std::is_same_v<PointType, Point3D>) 
+            {
+                int z;
+                iss >> comma >> z >> comma;
+                pointObjects.emplace_back(x, y, z);
+            } 
+            else 
+            {
+                pointObjects.emplace_back(x, y);
+            }
+        }
+    }
+    return pointObjects;
+}
 
 
 
@@ -347,6 +375,9 @@ ostream& threedec(ostream& os)
     os << fixed << setprecision(3);
     return os;
 }
+
+
+
 
 
 
@@ -405,6 +436,8 @@ int main()
     string mode2 = "Point2D";
     string mode3 = "x-ordinate";
     string mode4 = "ASC";
+    vector<string> lines; // Vector to store unique lines from the file
+    
 
     while (progflow == 1)
     {
@@ -433,7 +466,7 @@ int main()
 
                 if (file.is_open()) // Check if file is successfully opened
                 {
-                    vector<string> lines; // Vector to store unique lines from the file
+
                     set<string> seenLines; // Set to keep track of seen lines
                     string line;
 
@@ -449,6 +482,10 @@ int main()
                     }
                     // Close the file after reading
                     file.close();
+                    // Call createPointObjects function for Point2D
+                    vector<Point2D> point2DObjects = createPointObjects<Point2D>(lines);
+                    // Call createPointObjects function for Point3D
+                    vector<Point3D> point3DObjects = createPointObjects<Point3D>(lines); 
                     // Display the unique lines read from the file
                     cout << "Unique lines read from 'messy.txt':\n";
                     for (const auto& l : lines)
@@ -457,6 +494,19 @@ int main()
                     }
                     // Print the number of rows after duplicates have been removed
                     cout << lines.size() << " records read in successfully";
+
+                    // // Print the created Point2D objects
+                    // std::cout << "Point2D Objects:\n";
+                    // for (const auto& point : point2DObjects) {
+                    //     std::cout << point << "\n";
+                    // }
+
+                    // // Print the created Point3D objects
+                    // std::cout << "\nPoint3D Objects:\n";
+                    // for (const auto& point : point3DObjects) {
+                    //     std::cout << point << "\n";
+                    // }
+
 
                     cout << "Going back to main menu...";
                 }   
@@ -583,7 +633,10 @@ int main()
             break;
             case 5:
             {
-                cout << "hullo !";
+                cout << "\n[View Data...]\n";
+                cout << "filteria criteria: " << mode2 << "\n";
+                cout << "sorting criteria: " << mode3 << "\n";
+                cout << "sorting order: " << mode4 << "\n";
             }
             break;
             case 6:
