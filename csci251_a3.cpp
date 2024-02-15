@@ -398,9 +398,10 @@ int main()
                 cout << "Please enter filename: ";                
                 // cin >> filename; // No input validation for filename
                 filename = "messy.txt";
-                fstream file(filename, ios::in);
-                if (file.is_open()) 
+                fstream file(filename, fstream::in);
+                if (!file.fail()) 
                 {
+                    cout << "it works \n";
                     while (getline(file >> ws, line)) 
                     {
                         istringstream iss(line);
