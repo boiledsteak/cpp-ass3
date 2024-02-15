@@ -237,25 +237,30 @@ class Line3D : public Line2D
 
 namespace points
 {
-    using std::ostream;
-    using std::setw;
-    using std::right;
+    // IO manipulator for formatting PointType coordinates
+    template<typename PointType>
+    string formatPoint(const PointType& point) 
+    {
+        ostringstream oss;
+        oss << "["
+            << setw(4) << right << static_cast<int>(point.getX()) << ", "
+            << setw(4) << right << static_cast<int>(point.getY());  
 
-    // Overloading << for PointType. Formats the coordinates nicely
+        // For Point3D, also include the z-coordinate
+        if constexpr (is_same_v<PointType, Point3D>) 
+        {
+            oss << ", " << setw(4) << right << static_cast<int>(point.getZ());
+        }
+
+        oss << "]";
+        return oss.str();
+    }
+
+    // Overloading << for PointType. Delegates formatting to the IO manipulator
     template<typename PointType>
     ostream& operator<<(ostream& os, const PointType& point) 
     {
-        os << "["
-           << setw(4) << right << static_cast<int>(point.getX()) << ", "
-           << setw(4) << right << static_cast<int>(point.getY());  
-
-        // For Point3D, also include the z-coordinate
-        if constexpr (std::is_same_v<PointType, Point3D>) 
-        {
-            os << ", " << setw(4) << right << static_cast<int>(point.getZ());
-        }
-
-        os << "]";
+        os << formatPoint(point);
         return os;
     }
 
@@ -279,11 +284,20 @@ namespace points
 
 namespace lines 
 {
-    // Define operator<< for Line3D and Line2D
+    // IO manipulator for formatting LineType
     template<typename LineType>
-    std::ostream& operator<<(std::ostream& os, const LineType& line) 
+    string formatLine(const LineType& line) 
     {
-        os << "[" << line.getPt1() << "]   [" << line.getPt2() << "]";
+        ostringstream oss;
+        oss << "[" << line.getPt1() << "]   [" << line.getPt2() << "]";
+        return oss.str();
+    }
+
+    // Overloading << for LineType. Delegates formatting to the IO manipulator
+    template<typename LineType>
+    ostream& operator<<(ostream& os, const LineType& line) 
+    {
+        os << formatLine(line);
         return os;
     }
 
