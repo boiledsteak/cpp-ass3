@@ -350,9 +350,37 @@ ostream& threedec(ostream& os)
 
 
 
+void successprint(string choice)
+{
+    cout << "\nFilter criteria successfuly set to " << choice << "\n";
+}
 
+void option4menu()
+{
+    cout << "\ta.\tASC (Ascending order)\n";
+    cout << "\tb.\tDSC (Descending order)\n";
+    cout << "\nPlease enter your criteria (a - b): ";
+    
+}
 
-void menuprinter()
+void option3menu()
+{
+    cout << "\ta.\tPt. 1's (x,y) values\n";
+    cout << "\tb.\tPt. 2's (x,y) values\n";
+    cout << "\tc.\tLength Value\n";
+    cout << "\nPlease enter your criteria (a - c): ";
+}
+
+void option2menu()
+{
+    cout << "\ta.\tPoint 2D records\n";
+    cout << "\tb.\tPoint 3D records\n";
+    cout << "\tc.\tLine 2D records\n";
+    cout << "\td. \tLine 3D records\n\n";
+    cout << "\nPlease enter your criteria (a - d): ";
+}
+
+void menuprinter(string mode2, string mode3, string mode4)
 {
     cout << "\n\n\n";
     cout << "Student ID:" << "\t8750634\n";
@@ -360,9 +388,9 @@ void menuprinter()
     cout << "------------------------------------------------------\n";
     cout << "Welcome to Assignment 3 program!\n\n";
     cout << "1)" << "\tRead in data\n"; 
-    cout << "2)" << "\tSpecify filtering criteria (current: Point2D)\n";
-    cout << "3)" << "\tSpecify sorting criteria (current: x-ordinate)\n"; 
-    cout << "4)" << "\tSpecify sorting order (current: ASC) \n";
+    cout << "2)" << "\tSpecify filtering criteria (current: "<< mode2 <<")\n";
+    cout << "3)" << "\tSpecify sorting criteria (current: "<< mode3 <<")\n"; 
+    cout << "4)" << "\tSpecify sorting order (current: "<< mode4 <<") \n";
     cout << "5)" << "\tView data \n";
     cout << "6)" << "\tStore data \n";
     cout << "7)" << "\tExit \n";
@@ -374,17 +402,20 @@ int main()
     int progflow = 1;
     int menuchoice = 0;
     string invalidinp = "\nSorry I do not understand :( Please try again!\n\n";
+    string mode2 = "Point2D";
+    string mode3 = "x-ordinate";
+    string mode4 = "ASC";
 
     while (progflow == 1)
     {
-        menuprinter();
+        menuprinter(mode2, mode3, mode4);
         // input validation
         while (!(cin >> menuchoice) || cin.peek() != '\n') 
         {
             cout << invalidinp;
             cin.clear();  // Clear the error flag
             cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Discard invalid input
-            menuprinter();
+            menuprinter(mode2, mode3, mode4);
         }
 
         switch (menuchoice)
@@ -424,26 +455,130 @@ int main()
                     {
                         cout << l << endl;
                     }
-                }
-                    
+                    // Print the number of rows after duplicates have been removed
+                    cout << lines.size() << " records read in successfully";
+
+                    cout << "Going back to main menu...";
+                }   
             }
             break;
 
-
-
             case 2:
             {
-                cout << "hullo !";
+                char option;
+                cout << "\n[Specifying filtering criteria (current: "<<mode2<<")]\n";
+                option2menu();
+                while (!(cin >> option) || cin.peek() != '\n' || (option != 'a' && option != 'b' && option != 'c' && option != 'd')) 
+                {
+                    cout << invalidinp;
+                    cin.clear();  // Clear the error flag
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Discard invalid input
+                    option2menu();
+                }
+                switch (option)
+                {
+                    case 'a':
+                        {
+                            mode2 = "Point2D";
+                            successprint(mode2);
+                        }
+                        break;
+                    case 'b':
+                        {
+                            mode2 = "Point3D";
+                            successprint(mode2);
+                        }
+                        break;
+                    case 'c':
+                        {
+                            mode2 = "Line2D";
+                            successprint(mode2);
+                        }
+                        break;
+                    case 'd':
+                        {
+                            mode2 = "Line3D";
+                            successprint(mode2);
+                        }
+                        break;
+                    
+                    default:
+                        cout << "\nWe don't have that option :( Please try again...\n\n";
+                        break;
+                }
+
             }
             break;
             case 3:
             {
-                cout << "hullo !";
+                char option;
+                cout << "\n[Specifying sorting criteria (current: "<<mode3<<")]\n";
+                option3menu();
+                while (!(cin >> option) || cin.peek() != '\n' || (option != 'a' && option != 'b' && option != 'c')) 
+                {
+                    cout << invalidinp;
+                    cin.clear();  // Clear the error flag
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Discard invalid input
+                    option3menu();
+                }
+                switch (option)
+                {
+                    case 'a':
+                        {
+                            mode3 = "Pt. 1";
+                            successprint(mode3);
+                        }
+                        break;
+                    case 'b':
+                        {
+                            mode3 = "Pt. 2";
+                            successprint(mode3);
+                        }
+                        break;
+                    case 'c':
+                        {
+                            mode3 = "Length";
+                            successprint(mode3);
+                        }
+                        break;
+                    
+                    default:
+                        cout << "\nWe don't have that option :( Please try again...\n\n";
+                        break;
+                }
             }
             break;
             case 4:
             {
-                cout << "hullo !";
+                char option;
+                cout << "\n[Specifying sorting order (current: "<<mode4<<")]\n";
+                option4menu();
+                while (!(cin >> option) || cin.peek() != '\n' || (option != 'a' && option != 'b')) 
+                {
+                    cout << invalidinp;
+                    cin.clear();  // Clear the error flag
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Discard invalid input
+                    option4menu();
+                }
+                switch (option)
+                {
+                    case 'a':
+                        {
+                            mode4 = "ASC";
+                            successprint(mode4);
+                        }
+                        break;
+                    case 'b':
+                        {
+                            mode4 = "DSC";
+                            successprint(mode4);
+                        }
+                        break;
+                    
+                    default:
+                        cout << "\nWe don't have that option :( Please try again...\n\n";
+                        break;
+                }
             }
             break;
             case 5:
