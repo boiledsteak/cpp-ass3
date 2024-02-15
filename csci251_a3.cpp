@@ -16,6 +16,7 @@
 #include <sstream>
 #include <cerrno> 
 #include <cstring>  
+#include <set>
 
 
 using namespace std;
@@ -390,36 +391,41 @@ int main()
         {
             case 1:
             {
-                string filename;
-                string line;
-                
+                string filename;            
 
                 cout << ">>>>>>>>>>>>\t" << "Option\t" << menuchoice << "\t>>>>>>>>>>>>\n\n";
+                // ----------- reading file into vector
                 cout << "Please enter filename: ";                
                 // cin >> filename; // No input validation for filename
                 filename = "messy.txt";
-                fstream file(filename, fstream::in);
-                if (!file.fail()) 
+                ifstream file(filename); // Open file for reading
+
+                if (file.is_open()) // Check if file is successfully opened
                 {
-                    cout << "it works \n";
-                    while (getline(file >> ws, line)) 
+                    vector<string> lines; // Vector to store unique lines from the file
+                    set<string> seenLines; // Set to keep track of seen lines
+                    string line;
+
+                    // Read each line from the file
+                    while (getline(file, line))
                     {
-                        istringstream iss(line);
-                        int num;
-                        while (iss >> num) 
+                        // Check if the line is unique
+                        if (seenLines.insert(line).second)
                         {
-                            cout << "Read number: " << num << endl;
+                            // If the line is unique, push it into the vector
+                            lines.push_back(line);
                         }
                     }
-
+                    // Close the file after reading
                     file.close();
+                    // Display the unique lines read from the file
+                    cout << "Unique lines read from 'messy.txt':\n";
+                    for (const auto& l : lines)
+                    {
+                        cout << l << endl;
+                    }
                 }
-                else 
-                {
-                    cout << filename << "\n";
-                    cerr << "Failed to open the file." << endl;
-                    cerr << "Error code: " << errno << ", " << strerror(errno) << endl;
-                }
+                    
             }
             break;
 
