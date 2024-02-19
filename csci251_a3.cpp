@@ -82,11 +82,9 @@ class Point2D
             // distFrOrigin = calculateDistance();
         }
 
-        // Overload == operator for Point2D
-        bool operator==(const Point2D& other) const 
-        {
-            return x == other.x && y == other.y;
-        }
+        
+
+        
 };
 
 class Line2D 
@@ -236,81 +234,41 @@ class Line3D : public Line2D
         }
 };
 
-// ----------------------------------------------------operator overloads
 
-namespace points
+
+
+
+
+// OPERATOR OVERLOADS
+
+template<typename PointType>
+string formatPoint(const PointType& point) 
 {
-    // IO manipulator for formatting PointType coordinates
-    template<typename PointType>
-    string formatPoint(const PointType& point) 
+    ostringstream oss;
+    oss << "["
+        << setw(4) << right << static_cast<int>(point.getX()) << ", "
+        << setw(4) << right << static_cast<int>(point.getY());  
+
+    // For Point3D, also include the z-coordinate
+    if constexpr (is_same_v<PointType, Point3D>) 
     {
-        ostringstream oss;
-        oss << "["
-            << setw(4) << right << static_cast<int>(point.getX()) << ", "
-            << setw(4) << right << static_cast<int>(point.getY());  
-
-        // For Point3D, also include the z-coordinate
-        if constexpr (is_same_v<PointType, Point3D>) 
-        {
-            oss << ", " << setw(4) << right << static_cast<int>(point.getZ());
-        }
-
-        oss << "]";
-        return oss.str();
+        oss << ", " << setw(4) << right << static_cast<int>(point.getZ());
     }
 
-    // Overloading << for PointType. Delegates formatting to the IO manipulator
-    template<typename PointType>
-    ostream& operator<<(ostream& os, const PointType& point) 
-    {
-        os << formatPoint(point);
-        return os;
-    }
-
-    // Overloading == for PointType. Allows obj == obj for Point2D or Point3D
-    template<typename PointType>
-    bool operator==(const PointType& p1, const PointType& p2)
-    {
-        bool answer;
-        answer = p1.getX() == p2.getX() && p1.getY() == p2.getY();
-
-        // For Point3D, also include the z-coordinate
-        if constexpr (std::is_same_v<PointType, Point3D>) 
-        {
-            answer = p1.getX() == p2.getX() && p1.getY() == p2.getY() && p1.getZ() == p2.getZ();
-        }
-
-        return answer;
-    }
+    oss << "]";
+    return oss.str();
 }
 
-
-namespace lines 
-{
-    // IO manipulator for formatting LineType
-    template<typename LineType>
-    string formatLine(const LineType& line) 
-    {
-        ostringstream oss;
-        oss << "[" << line.getPt1() << "]   [" << line.getPt2() << "]";
-        return oss.str();
-    }
-
-    // Overloading << for LineType. Delegates formatting to the IO manipulator
-    template<typename LineType>
-    ostream& operator<<(ostream& os, const LineType& line) 
-    {
-        os << formatLine(line);
-        return os;
-    }
-
-    // Overloading == for LineType. Allows obj == obj for Line2D or Line3D
-    template<typename LineType>
-    bool operator==(const LineType& line1, const LineType& line2)
-    {
-        return line1.getPt1() == line2.getPt1() && line1.getPt2() == line2.getPt2();
-    }
+ostream& operator<<(ostream& os, const Point2D& point) {
+    os << formatPoint(point);
+    return os;
 }
+
+ostream& operator<<(ostream& os, const Point3D& point) {
+    os << formatPoint(point);
+    return os;
+}
+
 
 
 // ----------------------------------------------------other template functions
@@ -328,35 +286,6 @@ bool equals(const T& value1, const T& value2)
 {
     return value1 == value2;
 }
-
-template<typename PointType>
-vector<PointType> createPointObjects(const vector<string>& lines) 
-{
-    vector<PointType> pointObjects;
-    for (const string& line : lines) {
-        istringstream iss(line);
-        string objectType;
-        iss >> objectType;
-        if (objectType == typeid(PointType).name()) 
-        {
-            int x, y;
-            char comma;
-            iss >> comma >> x >> comma >> y >> comma;
-            if constexpr (std::is_same_v<PointType, Point3D>) 
-            {
-                int z;
-                iss >> comma >> z >> comma;
-                pointObjects.emplace_back(x, y, z);
-            } 
-            else 
-            {
-                pointObjects.emplace_back(x, y);
-            }
-        }
-    }
-    return pointObjects;
-}
-
 
 
 
@@ -464,7 +393,7 @@ int main()
                 filename = "messy.txt";
                 ifstream file(filename); // Open file for reading
 
-                if (file.is_open()) // Check if file is successfully opened
+                                if (file.is_open()) // Check if file is successfully opened
                 {
 
                     set<string> seenLines; // Set to keep track of seen lines
@@ -482,34 +411,82 @@ int main()
                     }
                     // Close the file after reading
                     file.close();
-                    // Call createPointObjects function for Point2D
-                    vector<Point2D> point2DObjects = createPointObjects<Point2D>(lines);
-                    // Call createPointObjects function for Point3D
-                    vector<Point3D> point3DObjects = createPointObjects<Point3D>(lines); 
                     // Display the unique lines read from the file
-                    cout << "Unique lines read from 'messy.txt':\n";
+                    cout << "\n\nUnique lines read from 'messy.txt':\n";
                     for (const auto& l : lines)
                     {
                         cout << l << endl;
                     }
                     // Print the number of rows after duplicates have been removed
-                    cout << lines.size() << " records read in successfully";
+                    cout << lines.size() << " records read in successfully\n";
+                    
+                    vector<Point2D> point2Dobjects;
+                    vector<Point3D> point3Dobjects;
+                    vector<Line2D> line2Dobjects;
+                    vector<Line3D> line3Dobjects;
+                    // check what type each line is
+                    for (const auto& line : lines) 
+                    {
+                        istringstream iss(line);
+                        string type;
+                        iss >> type;
 
-                    // // Print the created Point2D objects
-                    // std::cout << "Point2D Objects:\n";
-                    // for (const auto& point : point2DObjects) {
-                    //     std::cout << point << "\n";
-                    // }
+                        if (type == "Point2D,") 
+                        {
+                            cout << "Yep, this is Point2D\n";
+                            int x, y;
+                            char c;
+                            iss >> c >> x >> c >> y >> c;
+                            point2Dobjects.emplace_back(x, y);
+                        } 
+                        else if (type == "Point3D,") 
+                        {
+                            cout << "Yep, this is Point3D\n";
+                            int x, y, z;
+                            char c;
+                            iss >> c >> x >> c >> y >> c >> z >> c;
+                            point3Dobjects.emplace_back(x, y, z);
+                        } 
+                        else if (type == "Line2D,") 
+                        {
+                            cout << "Yep, this is Line2D\n";
+                            int x1, y1, x2, y2;
+                            char c;
+                            iss >> c >> x1 >> c >> y1 >> c >> x2 >> c >> y2 >> c;
+                            Point2D pt1(x1, y1);
+                            Point2D pt2(x2, y2);
+                            line2Dobjects.emplace_back(pt1, pt2);
+                        } 
+                        else if (type == "Line3D,") 
+                        {
+                            cout << "Yep, this is Line3D\n";
+                            int x1, y1, z1, x2, y2, z2;
+                            char c;
+                            iss >> c >> x1 >> c >> y1 >> c >> z1 >> c >> x2 >> c >> y2 >> c >> z2 >> c;
+                            Point3D pt1(x1, y1, z1);
+                            Point3D pt2(x2, y2, z2);
+                            line3Dobjects.emplace_back(pt1, pt2);
+                        }
+                    }
 
-                    // // Print the created Point3D objects
-                    // std::cout << "\nPoint3D Objects:\n";
-                    // for (const auto& point : point3DObjects) {
-                    //     std::cout << point << "\n";
-                    // }
+                    cout << "\n\nContents of point2Dobjects:\n";
+                    for (const auto& point : point2Dobjects) 
+                    {
+                        cout << point << endl;
+                    }
+
+                    cout << "\n\nContents of point3Dobjects:\n";
+                    for (const auto& point : point3Dobjects) {
+                        cout << point << endl;
+                    }
+
+
+
+                    
 
 
                     cout << "Going back to main menu...";
-                }   
+                }      
             }
             break;
 
