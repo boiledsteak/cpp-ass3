@@ -239,7 +239,24 @@ class Line3D : public Line2D
 
 
 
-// OPERATOR OVERLOADS
+// ----------------------------------------------------OPERATOR OVERLOADS
+
+// ------------FOR POINTS
+
+template<typename PointType>
+bool comparePoints(const PointType& p1, const PointType& p2) 
+{
+    bool answer;
+    answer = p1.getX() == p2.getX() && p1.getY() == p2.getY();
+
+    // For Point3D, also include the z-coordinate
+    if constexpr (is_same_v<PointType, Point3D>) 
+    {
+        answer = p1.getX() == p2.getX() && p1.getY() == p2.getY() && p1.getZ() == p2.getZ();
+    }
+
+    return answer;
+}
 
 template<typename PointType>
 string formatPoint(const PointType& point) 
@@ -259,15 +276,52 @@ string formatPoint(const PointType& point)
     return oss.str();
 }
 
-ostream& operator<<(ostream& os, const Point2D& point) {
+ostream& operator<<(ostream& os, const Point2D& point) 
+{
     os << formatPoint(point);
     return os;
 }
 
-ostream& operator<<(ostream& os, const Point3D& point) {
+ostream& operator<<(ostream& os, const Point3D& point) 
+{
     os << formatPoint(point);
     return os;
 }
+
+bool operator==(Point2D &p1, Point2D &p2)
+{
+
+    return comparePoints(p1, p2);
+}
+
+bool operator==(Point3D &p1, Point3D &p2)
+{
+    return comparePoints(p1, p2);
+}
+
+// ------------FOR LINES
+
+template<typename LineType>
+string formatLine(const LineType& line) 
+{
+    ostringstream oss;
+    oss <<  line.getPt1() << "   " << line.getPt2();
+    return oss.str();
+}
+
+
+bool operator==(Line2D &l1, Line2D &l2)
+{
+    return l1 == l2;
+}
+
+bool operator==(Line3D &l1, Line3D &l2)
+{
+    return l1 == l2;
+}
+
+
+
 
 
 
