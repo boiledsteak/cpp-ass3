@@ -309,6 +309,18 @@ string formatLine(const LineType& line)
     return oss.str();
 }
 
+ostream& operator<<(ostream& os, const Line2D& line) 
+{
+    os << formatLine(line);
+    return os;
+}
+
+ostream& operator<<(ostream& os, const Line3D& line) 
+{
+    os << formatLine(line);
+    return os;
+}
+
 
 bool operator==(Line2D &l1, Line2D &l2)
 {
@@ -475,7 +487,9 @@ int main()
                     cout << lines.size() << " records read in successfully\n";
                     
                     vector<Point2D> point2Dobjects;
+                    vector<Point2D> temppoint2Dobjects;
                     vector<Point3D> point3Dobjects;
+                    vector<Point3D> temppoint3Dobjects;
                     vector<Line2D> line2Dobjects;
                     vector<Line3D> line3Dobjects;
                     // check what type each line is
@@ -489,37 +503,78 @@ int main()
                         {
                             cout << "Yep, this is Point2D\n";
                             int x, y;
-                            char c;
-                            iss >> c >> x >> c >> y >> c;
-                            point2Dobjects.emplace_back(x, y);
+                            char ch;
+                            char comma;
+                            // Ignore characters until '[' is found
+                            while (iss >> ch && ch != '[');
+                            // Extract numbers until ']' is found
+                            while (iss >> x >> comma >> y >> ch && ch == ']') 
+                            {
+                                Point2D obj(x, y);
+                                point2Dobjects.emplace_back(obj);
+                                // Ignore characters until '[' is found for the next pair
+                                while (iss >> ch && ch != '[');
+                            }
                         } 
                         else if (type == "Point3D,") 
                         {
                             cout << "Yep, this is Point3D\n";
                             int x, y, z;
-                            char c;
-                            iss >> c >> x >> c >> y >> c >> z >> c;
-                            point3Dobjects.emplace_back(x, y, z);
+                            char ch;
+                            char comma;
+                            // Ignore characters until '[' is found
+                            while (iss >> ch && ch != '[');
+                            // Extract numbers until ']' is found
+                            while (iss >> x >> comma >> y >> comma >> z >> ch && ch == ']') 
+                            {
+                                Point3D obj(x, y, z);
+                                point3Dobjects.emplace_back(obj);
+                                // Ignore characters until '[' is found for the next pair
+                                while (iss >> ch && ch != '[');
+                            }
                         } 
                         else if (type == "Line2D,") 
                         {
+                            temppoint2Dobjects.clear(); // Clear the temporary vector
                             cout << "Yep, this is Line2D\n";
-                            int x1, y1, x2, y2;
-                            char c;
-                            iss >> c >> x1 >> c >> y1 >> c >> x2 >> c >> y2 >> c;
-                            Point2D pt1(x1, y1);
-                            Point2D pt2(x2, y2);
-                            line2Dobjects.emplace_back(pt1, pt2);
+                            int x, y;
+                            char ch;
+                            char comma;
+                            // Ignore characters until '[' is found
+                            while (iss >> ch && ch != '[');
+                            // Extract numbers until ']' is found
+                            while (iss >> x >> comma >> y >> ch && ch == ']')
+                            {
+                                cout << "\n\nsomethig happened\n\n";
+                                Point2D obj(x, y);
+                                temppoint2Dobjects.emplace_back(obj);
+                                // Ignore characters until '[' is found for the next pair
+                                while (iss >> ch && ch != '[');
+                            }                                                        
+                            Line2D lobj(temppoint2Dobjects[0],temppoint2Dobjects[1]);
+                            line2Dobjects.emplace_back(lobj);
                         } 
                         else if (type == "Line3D,") 
                         {
+                            temppoint3Dobjects.clear(); // Clear the temporary vector
                             cout << "Yep, this is Line3D\n";
-                            int x1, y1, z1, x2, y2, z2;
-                            char c;
-                            iss >> c >> x1 >> c >> y1 >> c >> z1 >> c >> x2 >> c >> y2 >> c >> z2 >> c;
-                            Point3D pt1(x1, y1, z1);
-                            Point3D pt2(x2, y2, z2);
-                            line3Dobjects.emplace_back(pt1, pt2);
+                            cout << line <<"\n";
+                            int x, y, z;
+                            char ch;
+                            char comma;
+                            // Ignore characters until '[' is found
+                            while (iss >> ch && ch != '[');
+                            // Extract numbers until ']' is found
+                            while (iss >> x >> comma >> y >> comma >> z >> ch && ch == ']') 
+                            {
+                                cout << "\n\nentered here\n\n";
+                                Point3D obj(x, y, z);
+                                temppoint3Dobjects.emplace_back(obj);
+                                // Ignore characters until '[' is found for the next pair
+                                while (iss >> ch && ch != '[');
+                            }
+                            Line3D lobj(temppoint3Dobjects[0],temppoint3Dobjects[1]);
+                            line3Dobjects.emplace_back(lobj);
                         }
                     }
 
@@ -532,6 +587,22 @@ int main()
                     cout << "\n\nContents of point3Dobjects:\n";
                     for (const auto& point : point3Dobjects) {
                         cout << point << endl;
+                    }
+
+                    cout << "\n\nContents of temp vector :\n";
+                    for (const auto& thing : temppoint2Dobjects) {
+                        cout << thing << endl;
+                    }
+
+                    cout << "\n\n\nContents of LINE 2D :\n";
+                    for (const auto& thing : line2Dobjects) {
+                        cout << thing << endl;
+                    }
+
+                    cout << "\n\nContents of LINE 3Dobjects:\n";
+                    for (const auto& line : line3Dobjects) 
+                    {
+                        cout << line << endl;
                     }
 
 

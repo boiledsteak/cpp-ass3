@@ -1,122 +1,37 @@
 #include <iostream>
-#include <utility>
-#include <vector>
-#include <math.h>
-#include <string>
-#include <algorithm>
-#include <typeinfo>
-#include <limits>
-#include <iomanip>
-#include <fstream>
 #include <sstream>
-#include <cerrno> 
-#include <cstring>  
-#include <set>
-#include <memory>
-#include <variant>
-#include <type_traits>
-
+#include <vector>
 
 using namespace std;
 
-// ----------------------------------------------------class declarations
-class Point2D 
-{
-    protected:
-        int x;
-        int y;
-        double distFrOrigin;
+int main() {
+    // Input string
+    string input = "Line2D, [5, 7], [3, 8]";
 
-    protected:
-        // Setter for distFrOrigin
-        void setDistFrOrigin() 
-        {
-            distFrOrigin = calculateDistance();
-        }
-        // Calculate distance from origin
-        double calculateDistance() const 
-        {
-            return sqrt((x * x) + (y * y));
-        }
+    // Vector to store the extracted numbers
+    vector<pair<int, int>> numbers;
 
-    public:
-        // Constructor
-        Point2D(int x_val, int y_val) : x(x_val), y(y_val) 
-        {
-            distFrOrigin = calculateDistance();
-        }
+    // Create a stringstream from the input string
+    stringstream ss(input);
 
-        // Getter for x
-        int getX() const 
-        {
-            return x;
-        }
+    // Ignore characters until '[' is found
+    char ch;
+    while (ss >> ch && ch != '[');
 
-        // Getter for y
-        int getY() const 
-        {
-            return y;
-        }
+    // Extract numbers until ']' is found
+    int num1, num2;
+    char comma;
+    while (ss >> num1 >> comma >> num2 >> ch && ch == ']') {
+        numbers.emplace_back(num1, num2);
 
-        // Getter for distFrOrigin
-        double getScalarValue() const 
-        {
-            return distFrOrigin;
-        }
-
-        // Setter for x
-        void setX(int x_val) 
-        {
-            x = x_val;
-            // distFrOrigin = calculateDistance();
-        }
-
-        // Setter for y
-        void setY(int y_val) 
-        {
-            y = y_val;
-            // distFrOrigin = calculateDistance();
-        }
-        
-};
-
-// IO manipulator for formatting PointType coordinates
-template<typename PointType>
-string formatPoint(const PointType& point) 
-{
-    ostringstream oss;
-    oss << "["
-        << setw(4) << right << static_cast<int>(point.getX()) << ", "
-        << setw(4) << right << static_cast<int>(point.getY());  
-
-    // // For Point3D, also include the z-coordinate
-    // if constexpr (is_same_v<PointType, Point3D>) 
-    // {
-    //     oss << ", " << setw(4) << right << static_cast<int>(point.getZ());
-    // }
-
-    oss << "]";
-    return oss.str();
-}
-
-namespace MyNamespace {
-    // Overloading << for PointType. Delegates formatting to the IO manipulator
-    template<typename PointType>
-    ostream& operator<<(ostream& os, const PointType& point) 
-    {
-        os << formatPoint(point);
-        return os;
+        // Ignore characters until '[' is found for the next pair
+        while (ss >> ch && ch != '[');
     }
-}
 
+    // Display the extracted numbers
+    for (const auto& pair : numbers) {
+        cout << pair.first << " " << pair.second << endl;
+    }
 
-int main()
-{
-    Point2D obj(10,20);
-
-    cout << "\n\nlets see if this works\n\n";
-
-    std::cout << "\nPoint2D object: " << MyNamespace::operator<<(std::cout, obj) << "\n\n";
-    
     return 0;
 }

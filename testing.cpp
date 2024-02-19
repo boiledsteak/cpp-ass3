@@ -1,30 +1,25 @@
 #include <iostream>
-using namespace std;
-
-class Complex {
-private:
-    double real;
-    double imag;
-public:
-    Complex(double r = 0, double i = 0) : real(r), imag(i) {}
-
-    // Public getter methods
-    double getReal() const { return real; }
-    double getImag() const { return imag; }
-
-};
-
-// Overloading the << operator
-ostream& operator<<(ostream& os, const Complex& c) {
-    os << c.getReal() << " + " << c.getImag() << "i";
-    return os;
-}
+#include <sstream>
+#include <vector>
 
 int main() {
-    Complex c1(3.5, 2.5);
+    std::string line = "Line2D, [5, 7], [3, 8]";
+    std::istringstream iss(line);
+    std::vector<int> numbers;
+    char ch;
 
-    cout << "does this work?\n\n";
+    while (iss >> ch) {
+        if (std::isdigit(ch)) {
+            iss.unget();
+            int num;
+            iss >> num;
+            numbers.push_back(num);
+        }
+    }
 
-    cout << "Complex number c1: " << c1 << "\n\n\n";
+    for (int num : numbers) {
+        std::cout << num << std::endl;
+    }
+
     return 0;
 }
