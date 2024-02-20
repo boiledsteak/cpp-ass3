@@ -19,6 +19,8 @@
 #include <set>
 #include <memory>
 #include <variant>
+#include <map>
+#include <any>
 
 
 using namespace std;
@@ -343,6 +345,25 @@ bool equals(const T& value1, const T& value2)
 
 
 
+// Define a comparison function for sorting Point2D objects by Pt. 1, Pt. 2, or Length
+bool compareFunction(const Point2D& p1, const Point2D& p2, const string& mode3) 
+{
+    if (mode3 == "Pt. 1") 
+    {
+        return p1.getX() < p2.getX();
+    } 
+    else if (mode3 == "Pt. 2") 
+    {
+        return p1.getY() < p2.getY();
+    } 
+    else if (mode3 == "Length") 
+    {
+        return p1.getScalarValue() < p2.getScalarValue();
+    }
+    return false; // Default case
+}
+
+
 void successprint(string choice)
 {
     cout << "\nFilter criteria successfuly set to " << choice << "\n";
@@ -399,6 +420,21 @@ int main()
     string mode3 = "x-ordinate";
     string mode4 = "ASC";
     vector<string> lines; // Vector to store unique lines from the file
+    vector<Point2D> point2Dobjects;
+    vector<Point2D> temppoint2Dobjects;
+    vector<Point3D> point3Dobjects;
+    vector<Point3D> temppoint3Dobjects;
+    vector<Line2D> line2Dobjects;
+    vector<Line3D> line3Dobjects;
+
+    // Define a map to associate mode2 values with my vectors of objects
+    map<string, pair<string, any>> modeToContainer = 
+    {
+        {"Point2D", {"Point2D", &point2Dobjects}},
+        {"Point3D", {"Point3D", &point3Dobjects}},
+        {"Line2D", {"Line2D", &line2Dobjects}},
+        {"Line3D", {"Line3D", &line3Dobjects}}
+    };
     
 
     while (progflow == 1)
@@ -453,12 +489,7 @@ int main()
                     // Print the number of rows after duplicates have been removed
                     cout << lines.size() << " records read in successfully\n";
                     
-                    vector<Point2D> point2Dobjects;
-                    vector<Point2D> temppoint2Dobjects;
-                    vector<Point3D> point3Dobjects;
-                    vector<Point3D> temppoint3Dobjects;
-                    vector<Line2D> line2Dobjects;
-                    vector<Line3D> line3Dobjects;
+                    
                     // check what type each line is
                     for (const auto& line : lines) 
                     {
@@ -690,10 +721,39 @@ int main()
             case 5:
             {
                 cout << "\n[View Data...]\n";
-                cout << "filteria criteria: " << mode2 << "\n";
+                cout << "filtering criteria: " << mode2 << "\n";
                 cout << "sorting criteria: " << mode3 << "\n";
                 cout << "sorting order: " << mode4 << "\n";
+
+                // Print objects based on mode2
+                if (mode2 == "Point2D") {
+                    cout << "\nContents of Point2D objects:\n";
+                    for (const auto& point : point2Dobjects) {
+                        cout << point << "   "  << fixed << setprecision(3) << point.getScalarValue() << "\n";
+                    }
+                } else if (mode2 == "Point3D") {
+                    cout << "\nContents of Point3D objects:\n";
+                    for (const auto& point : point3Dobjects) {
+                        cout << point << "   "  << fixed << setprecision(3) << point.getScalarValue() << "\n";
+                    }
+                } else if (mode2 == "Line2D") {
+                    cout << "\nContents of Line2D objects:\n";
+                    for (const auto& line : line2Dobjects) {
+                        cout << line << "   "  << fixed << setprecision(3) << line.getScalarValue() << "\n";
+                    }
+                } else if (mode2 == "Line3D") {
+                    cout << "\nContents of Line3D objects:\n";
+                    for (const auto& line : line3Dobjects) {
+                        cout << line << "   "  << fixed << setprecision(3) << line.getScalarValue() << "\n";
+                    }
+                } else {
+                    cout << "Invalid mode specified.\n";
+                }
+
+                break;
             }
+            break;
+
             break;
             case 6:
             {
