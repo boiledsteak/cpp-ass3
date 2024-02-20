@@ -47,7 +47,7 @@ class Point2D
         // Constructor
         Point2D(int x_val, int y_val) : x(x_val), y(y_val) 
         {
-            // distFrOrigin = calculateDistance();
+            setDistFrOrigin();
         }
 
         // Getter for x
@@ -72,14 +72,12 @@ class Point2D
         void setX(int x_val) 
         {
             x = x_val;
-            // distFrOrigin = calculateDistance();
         }
 
         // Setter for y
         void setY(int y_val) 
         {
             y = y_val;
-            // distFrOrigin = calculateDistance();
         }
 
         
@@ -87,68 +85,6 @@ class Point2D
         
 };
 
-class Line2D 
-{
-    private:
-        Point2D pt1;
-        Point2D pt2;
-
-    protected:
-        double length;
-
-    protected:
-        void setLength() 
-        {
-            length = calculateLength();
-        }
-
-        // Calculate length of the line
-        double calculateLength() const 
-        {
-            int deltaX = pt1.getX() - pt2.getX();
-            int deltaY = pt1.getY() - pt2.getY();
-            return sqrt(deltaX * deltaX + deltaY * deltaY);
-        }
-
-    public:
-        // Constructor
-        Line2D(Point2D pt1_val, Point2D pt2_val) : pt1(pt1_val), pt2(pt2_val) 
-        {
-            length = calculateLength();
-        }
-
-        // Getter for pt1
-        Point2D getPt1() const 
-        {
-            return pt1;
-        }
-
-        // Getter for pt2
-        Point2D getPt2() const 
-        {
-            return pt2;
-        }
-
-        // Getter for length
-        double getScalarValue() const 
-        {
-            return length;
-        }
-
-        // Setter for pt1
-        void setPt1(Point2D pt1_val) 
-        {
-            pt1 = pt1_val;
-            // length = calculateLength();
-        }
-
-        // Setter for pt2
-        void setPt2(Point2D pt2_val) 
-        {
-            pt2 = pt2_val;
-            // length = calculateLength();
-        }
-};
 
 class Point3D : public Point2D 
 {
@@ -160,7 +96,10 @@ class Point3D : public Point2D
 
     public:
         // Constructor
-        Point3D(int x_val, int y_val, int z_val) : Point2D(x_val, y_val), z(z_val) {}
+        Point3D(int x_val, int y_val, int z_val) : Point2D(x_val, y_val), z(z_val) 
+        {
+            setDistFrOrigin();
+        }
 
         // Getter for z
         int getZ() const 
@@ -181,60 +120,76 @@ class Point3D : public Point2D
         }
 };
 
-class Line3D : public Line2D 
-{
-    private:
-        Point3D pt1;
-        Point3D pt2;
-        //inherited member of length from Line2D. Shares same value of length as Line2D. shares same value as Line2D. changes in here, will change there
+// Class Line2D
+class Line2D {
+private:
+    Point2D pt1;
+    Point2D pt2;
+    double length;
 
-    protected:
-        // Method to set the length
-        void setLength() 
-        {
-            double length = calculateLength();
-        }
+    // Calculate length of the line
+    double calculateLength() const {
+        int deltaX = pt1.getX() - pt2.getX();
+        int deltaY = pt1.getY() - pt2.getY();
+        return sqrt(deltaX * deltaX + deltaY * deltaY);
+    }
 
-        // Calculate length of the line
-        double calculateLength() const 
-        {
-            return sqrt(
-                ((pt1.getX()-pt2.getX())*(pt1.getX()-pt2.getX())) +
-                ((pt1.getY()-pt2.getY())*(pt1.getY()-pt2.getY())) +
-                ((pt1.getZ()-pt2.getZ())*(pt1.getZ()-pt2.getZ()))
-                );
-        }
+public:
+    // Constructor
+    Line2D(Point2D pt1_val, Point2D pt2_val) : pt1(pt1_val), pt2(pt2_val) {
+        length = calculateLength();
+    }
 
-    public:
-        // Constructor. Line3D inherits all the members of Line2D
-        Line3D(Point3D pt1_val, Point3D pt2_val) : Line2D(Point2D(0,0), Point2D(0,0)), pt1(pt1_val), pt2(pt2_val) {}
+    // Getter for pt1
+    Point2D getPt1() const {
+        return pt1;
+    }
 
-        // Getter for pt1
-        Point3D getPt1() const 
-        {
-            return pt1;
-        }
+    // Getter for pt2
+    Point2D getPt2() const {
+        return pt2;
+    }
 
-        // Getter for pt2
-        Point3D getPt2() const 
-        {
-            return pt2;
-        }
-
-        // Setter for pt1
-        void setPt1(Point3D pt1_val) 
-        {
-            pt1 = pt1_val;
-        }
-
-        // Setter for pt2
-        void setPt2(Point3D pt2_val) 
-        {
-            pt2 = pt2_val;
-        }
+    // Getter for length
+    double getScalarValue() const {
+        return length;
+    }
 };
 
+// Class Line3D
+class Line3D {
+private:
+    Point3D pt1;
+    Point3D pt2;
 
+    // Calculate length of the line
+    double calculateLength() const {
+        return sqrt(
+            ((pt1.getX() - pt2.getX()) * (pt1.getX() - pt2.getX())) +
+            ((pt1.getY() - pt2.getY()) * (pt1.getY() - pt2.getY())) +
+            ((pt1.getZ() - pt2.getZ()) * (pt1.getZ() - pt2.getZ()))
+        );
+    }
+
+public:
+    // Constructor
+    Line3D(Point3D pt1_val, Point3D pt2_val) : pt1(pt1_val), pt2(pt2_val) {}
+
+    // Getter for pt1
+    Point3D getPt1() const {
+        return pt1;
+    }
+
+    // Getter for pt2
+    Point3D getPt2() const {
+        return pt2;
+    }
+
+    // Getter for length
+    double getScalarValue() const {
+        return calculateLength();
+    }
+};
 
 
 
@@ -243,20 +198,7 @@ class Line3D : public Line2D
 
 // ------------FOR POINTS
 
-template<typename PointType>
-bool comparePoints(const PointType& p1, const PointType& p2) 
-{
-    bool answer;
-    answer = p1.getX() == p2.getX() && p1.getY() == p2.getY();
 
-    // For Point3D, also include the z-coordinate
-    if constexpr (is_same_v<PointType, Point3D>) 
-    {
-        answer = p1.getX() == p2.getX() && p1.getY() == p2.getY() && p1.getZ() == p2.getZ();
-    }
-
-    return answer;
-}
 
 template<typename PointType>
 string formatPoint(const PointType& point) 
@@ -274,6 +216,27 @@ string formatPoint(const PointType& point)
 
     oss << "]";
     return oss.str();
+}
+
+template<typename PointType>
+bool comparePoints(const PointType& p1, const PointType& p2) 
+{
+    bool answer;
+    answer = p1.getX() == p2.getX() && p1.getY() == p2.getY();
+
+    // For Point3D, also include the z-coordinate
+    if constexpr (is_same_v<PointType, Point3D>) 
+    {
+        answer = p1.getX() == p2.getX() && p1.getY() == p2.getY() && p1.getZ() == p2.getZ();
+    }
+
+    return answer;
+}
+
+template<typename PointType>
+double diff(const PointType& p1, const PointType& p2) 
+{
+    return p1.getScalarValue() - p2.getScalarValue();
 }
 
 ostream& operator<<(ostream& os, const Point2D& point) 
@@ -298,6 +261,19 @@ bool operator==(Point3D &p1, Point3D &p2)
 {
     return comparePoints(p1, p2);
 }
+
+bool operator-(Point2D &p1, Point2D &p2)
+{
+
+    return diff(p1, p2);
+}
+
+bool operator-(Point3D &p1, Point3D &p2)
+{
+    return diff(p1, p2);
+}
+
+
 
 // ------------FOR LINES
 
@@ -330,6 +306,16 @@ bool operator==(Line2D &l1, Line2D &l2)
 bool operator==(Line3D &l1, Line3D &l2)
 {
     return l1 == l2;
+}
+
+double operator-(Line2D &l1, Line2D &l2)
+{
+    return diff(l1,l2);
+}
+
+double operator-(Line3D &l1, Line3D &l2)
+{
+    return diff(l1,l2);
 }
 
 
@@ -501,7 +487,6 @@ int main()
 
                         if (type == "Point2D,") 
                         {
-                            cout << "Yep, this is Point2D\n";
                             int x, y;
                             char ch;
                             char comma;
@@ -518,7 +503,6 @@ int main()
                         } 
                         else if (type == "Point3D,") 
                         {
-                            cout << "Yep, this is Point3D\n";
                             int x, y, z;
                             char ch;
                             char comma;
@@ -536,7 +520,6 @@ int main()
                         else if (type == "Line2D,") 
                         {
                             temppoint2Dobjects.clear(); // Clear the temporary vector
-                            cout << "Yep, this is Line2D\n";
                             int x, y;
                             char ch;
                             char comma;
@@ -545,7 +528,6 @@ int main()
                             // Extract numbers until ']' is found
                             while (iss >> x >> comma >> y >> ch && ch == ']')
                             {
-                                cout << "\n\nsomethig happened\n\n";
                                 Point2D obj(x, y);
                                 temppoint2Dobjects.emplace_back(obj);
                                 // Ignore characters until '[' is found for the next pair
@@ -557,8 +539,6 @@ int main()
                         else if (type == "Line3D,") 
                         {
                             temppoint3Dobjects.clear(); // Clear the temporary vector
-                            cout << "Yep, this is Line3D\n";
-                            cout << line <<"\n";
                             int x, y, z;
                             char ch;
                             char comma;
@@ -567,7 +547,6 @@ int main()
                             // Extract numbers until ']' is found
                             while (iss >> x >> comma >> y >> comma >> z >> ch && ch == ']') 
                             {
-                                cout << "\n\nentered here\n\n";
                                 Point3D obj(x, y, z);
                                 temppoint3Dobjects.emplace_back(obj);
                                 // Ignore characters until '[' is found for the next pair
@@ -581,12 +560,12 @@ int main()
                     cout << "\n\nContents of point2Dobjects:\n";
                     for (const auto& point : point2Dobjects) 
                     {
-                        cout << point << endl;
+                        cout << point << "\t" << point.getScalarValue() << "\n";
                     }
 
                     cout << "\n\nContents of point3Dobjects:\n";
                     for (const auto& point : point3Dobjects) {
-                        cout << point << endl;
+                        cout << point << "\t" << point.getScalarValue() << "\n";
                     }
 
                     cout << "\n\nContents of temp vector :\n";
@@ -596,14 +575,19 @@ int main()
 
                     cout << "\n\n\nContents of LINE 2D :\n";
                     for (const auto& thing : line2Dobjects) {
-                        cout << thing << endl;
+                        cout << thing << "\t" << thing.getScalarValue()<< "\n";
                     }
 
                     cout << "\n\nContents of LINE 3Dobjects:\n";
-                    for (const auto& line : line3Dobjects) 
+                    for (auto& line : line3Dobjects) 
                     {
-                        cout << line << endl;
+                        cout << line << "\t" << line.getScalarValue()<< "\n";
                     }
+
+
+
+                    
+
 
 
 
