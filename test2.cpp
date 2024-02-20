@@ -1,37 +1,72 @@
-#include <iostream>
-#include <sstream>
-#include <vector>
-
-using namespace std;
-
-int main() {
-    // Input string
-    string input = "Line2D, [5, 7], [3, 8]";
-
-    // Vector to store the extracted numbers
-    vector<pair<int, int>> numbers;
-
-    // Create a stringstream from the input string
-    stringstream ss(input);
-
-    // Ignore characters until '[' is found
-    char ch;
-    while (ss >> ch && ch != '[');
-
-    // Extract numbers until ']' is found
-    int num1, num2;
-    char comma;
-    while (ss >> num1 >> comma >> num2 >> ch && ch == ']') {
-        numbers.emplace_back(num1, num2);
-
-        // Ignore characters until '[' is found for the next pair
-        while (ss >> ch && ch != '[');
+// Function to sort objects based on mode3 and mode4
+template<typename ObjectType>
+void sortObjects(vector<ObjectType>& objects, const string& mode3, const string& mode4) 
+{
+    // Implement sorting logic based on mode3 and mode4
+    // You can use std::sort or another sorting algorithm
+    // Adjust the sorting criteria according to mode3 and mode4
+    // Example:
+    if (mode3 == "Pt. 1") 
+    {
+        if (mode4 == "ASC") 
+        {
+            // Sort based on Pt. 1 in ascending order
+            sort(objects.begin(), objects.end(), [](const auto& obj1, const auto& obj2) {
+                // Implement comparison logic based on Pt. 1
+                // Example:
+                return obj1.getPt1() < obj2.getPt1();
+            });
+        } 
+        else if (mode4 == "DSC") 
+        {
+            // Sort based on Pt. 1 in descending order
+            sort(objects.begin(), objects.end(), [](const auto& obj1, const auto& obj2) {
+                // Implement comparison logic based on Pt. 1
+                // Example:
+                return obj1.getPt1() > obj2.getPt1();
+            });
+        }
+    } 
+    else if (mode3 == "Pt. 2") 
+    {
+        if (mode4 == "ASC") 
+        {
+            // Sort based on Pt. 2 in ascending order
+            sort(objects.begin(), objects.end(), [](const auto& obj1, const auto& obj2) {
+                // Implement comparison logic based on Pt. 2
+                // Example:
+                return obj1.getPt2() < obj2.getPt2();
+            });
+        } 
+        else if (mode4 == "DSC") 
+        {
+            // Sort based on Pt. 2 in descending order
+            sort(objects.begin(), objects.end(), [](const auto& obj1, const auto& obj2) {
+                // Implement comparison logic based on Pt. 2
+                // Example:
+                return obj1.getPt2() > obj2.getPt2();
+            });
+        }
+    } 
+    else if (mode3 == "Length") 
+    {
+        if (mode4 == "ASC") 
+        {
+            // Sort based on Length in ascending order
+            sort(objects.begin(), objects.end(), [](const auto& obj1, const auto& obj2) {
+                // Implement comparison logic based on Length
+                // Example:
+                return obj1.getScalarValue() < obj2.getScalarValue();
+            });
+        } 
+        else if (mode4 == "DSC") 
+        {
+            // Sort based on Length in descending order
+            sort(objects.begin(), objects.end(), [](const auto& obj1, const auto& obj2) {
+                // Implement comparison logic based on Length
+                // Example:
+                return obj1.getScalarValue() > obj2.getScalarValue();
+            });
+        }
     }
-
-    // Display the extracted numbers
-    for (const auto& pair : numbers) {
-        cout << pair.first << " " << pair.second << endl;
-    }
-
-    return 0;
 }

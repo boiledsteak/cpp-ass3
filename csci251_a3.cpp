@@ -19,8 +19,6 @@
 #include <set>
 #include <memory>
 #include <variant>
-#include <map>
-#include <any>
 
 
 using namespace std;
@@ -199,9 +197,6 @@ public:
 // ----------------------------------------------------OPERATOR OVERLOADS
 
 // ------------FOR POINTS
-
-
-
 template<typename PointType>
 string formatPoint(const PointType& point) 
 {
@@ -448,12 +443,33 @@ void option4menu()
     
 }
 
-void option3menu()
+void option3menu(string mode2)
 {
-    cout << "\ta.\tPt. 1's (x,y) values\n";
-    cout << "\tb.\tPt. 2's (x,y) values\n";
-    cout << "\tc.\tLength Value\n";
-    cout << "\nPlease enter your criteria (a - c): ";
+    if (mode2=="Point2D")
+    {
+        cout << "\ta.\tX-ordinate value\n";
+        cout << "\tb.\tY-ordinate value\n";
+        cout << "\tc.\tDistance From Origin Value\n";
+        cout << "\nPlease enter your criteria (a - c): ";
+    }
+
+    else if (mode2=="Point3D")
+    {
+        cout << "\ta.\tX-ordinate value\n";
+        cout << "\tb.\tY-ordinate value\n";
+        cout << "\tc.\tZ-ordinate value\n";
+        cout << "\td.\tDistance From Origin Value\n";
+        cout << "\nPlease enter your criteria (a - d): ";
+    }
+
+    else if (mode2=="Line3D" || mode2=="Line2D")
+    {
+        cout << "\ta.\tPt. 1's (x,y) values\n";
+        cout << "\tb.\tPt. 2's (x,y) values\n";
+        cout << "\tc.\tLength Value\n";
+        cout << "\nPlease enter your criteria (a - c): ";
+    }
+    
 }
 
 void option2menu()
@@ -497,15 +513,6 @@ int main()
     vector<Point3D> temppoint3Dobjects;
     vector<Line2D> line2Dobjects;
     vector<Line3D> line3Dobjects;
-
-    // Define a map to associate mode2 values with my vectors of objects
-    map<string, pair<string, any>> modeToContainer = 
-    {
-        {"Point2D", {"Point2D", &point2Dobjects}},
-        {"Point3D", {"Point3D", &point3Dobjects}},
-        {"Line2D", {"Line2D", &line2Dobjects}},
-        {"Line3D", {"Line3D", &line3Dobjects}}
-    };
     
 
     while (progflow == 1)
@@ -685,27 +692,32 @@ int main()
                 }
                 switch (option)
                 {
+                    // all cases reset mode3 back to default
                     case 'a':
                         {
                             mode2 = "Point2D";
+                            mode3 = "x-ordinate";
                             successprint(mode2);
                         }
                         break;
                     case 'b':
                         {
                             mode2 = "Point3D";
+                            mode3 = "x-ordinate";
                             successprint(mode2);
                         }
                         break;
                     case 'c':
                         {
                             mode2 = "Line2D";
+                            mode3 = "Pt. 1";
                             successprint(mode2);
                         }
                         break;
                     case 'd':
                         {
                             mode2 = "Line3D";
+                            mode3 = "Pt. 1";
                             successprint(mode2);
                         }
                         break;
@@ -721,39 +733,118 @@ int main()
             {
                 char option;
                 cout << "\n[Specifying sorting criteria (current: "<<mode3<<")]\n";
-                option3menu();
-                while (!(cin >> option) || cin.peek() != '\n' || (option != 'a' && option != 'b' && option != 'c')) 
+                option3menu(mode2);
+                while (!(cin >> option) || cin.peek() != '\n' || (option != 'a' && option != 'b' && option != 'c' && option != 'd')) 
                 {
                     cout << invalidinp;
                     cin.clear();  // Clear the error flag
                     cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Discard invalid input
-                    option3menu();
+                    option3menu(mode2);
                 }
-                switch (option)
+
+                if (mode2=="Point2D")
                 {
-                    case 'a':
-                        {
-                            mode3 = "Pt. 1";
-                            successprint(mode3);
-                        }
-                        break;
-                    case 'b':
-                        {
-                            mode3 = "Pt. 2";
-                            successprint(mode3);
-                        }
-                        break;
-                    case 'c':
-                        {
-                            mode3 = "Length";
-                            successprint(mode3);
-                        }
-                        break;
-                    
-                    default:
-                        cout << "\nWe don't have that option :( Please try again...\n\n";
-                        break;
+                    switch (option)
+                    {
+                        case 'a':
+                            {
+                                // X coord of point2d
+                                mode3 = "x-ordinate";
+                                successprint(mode3);
+                            }
+                            break;
+                        case 'b':
+                            {
+                                // y coord of point2d
+                                mode3 = "y-ordinate";
+                                successprint(mode3);
+                            }
+                            break;
+                        case 'c':
+                            {
+                                // distance from origin value
+                                mode3 = "dist";
+                                successprint(mode3);
+                            }
+                            break;
+                        
+                        default:
+                            cout << "\nWe don't have that option :( Please try again...\n\n";
+                            break;
+                    }
                 }
+
+                else if (mode2=="Point3D")
+                {
+                    switch (option)
+                    {
+                        case 'a':
+                            {
+                                // X coord of point3d
+                                mode3 = "x-ordinate";
+                                successprint(mode3);
+                            }
+                            break;
+                        case 'b':
+                            {
+                                // y coord of point3d
+                                mode3 = "y-ordinate";
+                                successprint(mode3);
+                            }
+                            break;
+                        case 'c':
+                            {
+                                // z coord of point3d
+                                mode3 = "z-ordinate";
+                                successprint(mode3);
+                            }
+                            break;
+                        case 'd':
+                            {
+                                // distance from origin value
+                                mode3 = "dist";
+                                successprint(mode3);
+                            }
+                            break;
+                        
+                        default:
+                            cout << "\nWe don't have that option :( Please try again...\n\n";
+                            break;
+                    }
+                }
+
+                else if (mode2=="Line3D" || mode2=="Line2D")
+                {
+                    switch (option)
+                    {
+                        case 'a':
+                            {
+                                // X and Y coord of pt1
+                                mode3 = "Pt. 1";
+                                successprint(mode3);
+                            }
+                            break;
+                        case 'b':
+                            {
+                                // X and Y coord of pt2
+                                mode3 = "Pt. 2";
+                                successprint(mode3);
+                            }
+                            break;
+                        case 'c':
+                            {
+                                mode3 = "Length";
+                                successprint(mode3);
+                            }
+                            break;
+                        
+                        default:
+                            cout << "\nWe don't have that option :( Please try again...\n\n";
+                            break;
+                    }
+                }
+                
+                    
             }
             break;
             case 4:
@@ -801,11 +892,14 @@ int main()
             break;
 
             break;
-            case 6: 
+            case 6:
             {
-                cout << "Saving data to a text file...\n";
-                string filename = mode2 + ".txt"; // Construct the file name based on mode2 value
+                string filename;
+                cout << "\n\nEnter the filename to save data: \n";
+                cin >> filename;
+
                 ofstream outputFile(filename); // Open the file for writing
+
                 if (!outputFile.is_open()) {
                     cout << "Error: Unable to open file for writing.\n";
                     break;
@@ -822,7 +916,18 @@ int main()
                 cout.rdbuf(original_cout); // Restore original cout buffer
                 outputFile.close(); // Close the file
 
-                cout << "Data saved to file: " << filename << "\n";
+                // Print the number of objects printed
+                cout << "\n";
+                if (mode2 == "Point2D")
+                    cout << point2Dobjects.size();
+                else if (mode2 == "Point3D")
+                    cout << point3Dobjects.size();
+                else if (mode2 == "Line2D")
+                    cout << line2Dobjects.size();
+                else if (mode2 == "Line3D")
+                    cout << line3Dobjects.size();
+                cout << " records output successfully!\n\n";
+                cout << "Going back to main menu...\n\n";
             }
             break;
             case 7:
