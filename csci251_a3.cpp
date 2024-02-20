@@ -339,10 +339,82 @@ bool equals(const T& value1, const T& value2)
 
 
 
+// TODO see sorting chatroom. Might need to overload < and > 
+// Function to sort objects based on mode3 and mode4
+template<typename ObjectType>
+void sortObjects(vector<ObjectType>& objects, const string& mode3, const string& mode4) 
+{
+    if (mode3 == "Pt. 1") 
+    {
+        if (mode4 == "ASC") 
+        {
+            // Sort based on Pt. 1 in ascending order
+            sort(objects.begin(), objects.end(), [](const auto& obj1, const auto& obj2) {
+                // Implement comparison logic based on Pt. 1
+                // Example:
+                return obj1.getPt1() < obj2.getPt1();
+            });
+        } 
+        else if (mode4 == "DSC") 
+        {
+            // Sort based on Pt. 1 in descending order
+            sort(objects.begin(), objects.end(), [](const auto& obj1, const auto& obj2) {
+                // Implement comparison logic based on Pt. 1
+                // Example:
+                return obj1.getPt1() > obj2.getPt1();
+            });
+        }
+    } 
+    else if (mode3 == "Pt. 2") 
+    {
+        if (mode4 == "ASC") 
+        {
+            // Sort based on Pt. 2 in ascending order
+            sort(objects.begin(), objects.end(), [](const auto& obj1, const auto& obj2) {
+                // Implement comparison logic based on Pt. 2
+                // Example:
+                return obj1.getPt2() < obj2.getPt2();
+            });
+        } 
+        else if (mode4 == "DSC") 
+        {
+            // Sort based on Pt. 2 in descending order
+            sort(objects.begin(), objects.end(), [](const auto& obj1, const auto& obj2) {
+                // Implement comparison logic based on Pt. 2
+                // Example:
+                return obj1.getPt2() > obj2.getPt2();
+            });
+        }
+    } 
+    else if (mode3 == "Length") 
+    {
+        if (mode4 == "ASC") 
+        {
+            // Sort based on Length in ascending order
+            sort(objects.begin(), objects.end(), [](const auto& obj1, const auto& obj2) {
+                // Implement comparison logic based on Length
+                // Example:
+                return obj1.getScalarValue() < obj2.getScalarValue();
+            });
+        } 
+        else if (mode4 == "DSC") 
+        {
+            // Sort based on Length in descending order
+            sort(objects.begin(), objects.end(), [](const auto& obj1, const auto& obj2) {
+                // Implement comparison logic based on Length
+                // Example:
+                return obj1.getScalarValue() > obj2.getScalarValue();
+            });
+        }
+    }
+}
+
 
 // Function to print objects based on mode2
 void printObjects(const string& mode2, const vector<Point2D>& point2Dobjects,const vector<Point3D>& point3Dobjects, const vector<Line2D>& line2Dobjects, const vector<Line3D>& line3Dobjects) 
 {
+    
+
     if (mode2 == "Point2D") 
     {
         cout 
@@ -882,6 +954,7 @@ int main()
             break;
             case 5:
             {
+                // sortObjects(line3Dobjects, mode3, mode4);
                 cout << "\n\n[View Data...]\n\n";
                 cout << "filtering criteria: " << mode2 << "\n";
                 cout << "sorting criteria: " << mode3 << "\n";

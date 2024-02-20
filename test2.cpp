@@ -2,10 +2,6 @@
 template<typename ObjectType>
 void sortObjects(vector<ObjectType>& objects, const string& mode3, const string& mode4) 
 {
-    // Implement sorting logic based on mode3 and mode4
-    // You can use std::sort or another sorting algorithm
-    // Adjust the sorting criteria according to mode3 and mode4
-    // Example:
     if (mode3 == "Pt. 1") 
     {
         if (mode4 == "ASC") 
