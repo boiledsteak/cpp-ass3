@@ -1,0 +1,6 @@
+
+[View Data...]
+filtering criteria: Point2D
+
+Contents of Point2D objects:
+[   3,    2]   3.606

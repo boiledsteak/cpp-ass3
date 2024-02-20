@@ -345,22 +345,93 @@ bool equals(const T& value1, const T& value2)
 
 
 
-// Define a comparison function for sorting Point2D objects by Pt. 1, Pt. 2, or Length
-bool compareFunction(const Point2D& p1, const Point2D& p2, const string& mode3) 
+// Function to print objects based on mode2
+void printObjects(const string& mode2, const vector<Point2D>& point2Dobjects,const vector<Point3D>& point3Dobjects, const vector<Line2D>& line2Dobjects, const vector<Line3D>& line3Dobjects) 
 {
-    if (mode3 == "Pt. 1") 
+    if (mode2 == "Point2D") 
     {
-        return p1.getX() < p2.getX();
+        cout 
+        << " " << setw(4) << right << "X" 
+        << "  " << setw(4) << right << "Y"
+        << "   "
+        << " Length"
+        << "\n";
+        for (int i = 0; i < 27; ++i) 
+        {
+            cout << "- ";
+        }
+        cout << "\n";
+        for (const auto& point : point2Dobjects) 
+        {
+            cout << point << "   "  << fixed << setprecision(3) << point.getScalarValue() << "\n";
+        }
     } 
-    else if (mode3 == "Pt. 2") 
+    else if (mode2 == "Point3D") 
     {
-        return p1.getY() < p2.getY();
+        cout 
+        << " " << setw(4) << right << "X" 
+        << "  " << setw(4) << right << "Y"
+        << "  " << setw(4) << right << "Z"
+        << "   "
+        << " Length"
+        << "\n";
+        for (int i = 0; i < 27; ++i) 
+        {
+            cout << "- ";
+        }
+        cout << "\n";
+        for (const auto& point : point3Dobjects) 
+        {
+            cout << point << "   "  << fixed << setprecision(3) << point.getScalarValue() << "\n";
+        }
     } 
-    else if (mode3 == "Length") 
+    else if (mode2 == "Line2D") 
     {
-        return p1.getScalarValue() < p2.getScalarValue();
+        cout 
+        << " " << setw(4) << right << "P1-X" 
+        << "  " << setw(4) << right << "P1-Y"
+        << "   "
+        << "  " << setw(4) << right << "P2-X" 
+        << "  " << setw(4) << right << "P2-Y"
+        << "   "
+        << " Length"
+        << "\n";
+        for (int i = 0; i < 27; ++i) 
+        {
+            cout << "- ";
+        }
+        cout << "\n";
+        for (const auto& line : line2Dobjects) 
+        {
+            cout << line << "   "  << fixed << setprecision(3) << line.getScalarValue() << "\n";
+        }
+    } 
+    else if (mode2 == "Line3D") 
+    {
+        cout 
+        << " " << setw(4) << right << "P1-X" 
+        << "  " << setw(4) << right << "P1-Y"
+        << "  " << setw(4) << right << "P1-Z"
+        << "   "
+        << "  " << setw(4) << right << "P2-X" 
+        << "  " << setw(4) << right << "P2-Y"
+        << "  " << setw(4) << right << "P2-Z"
+        << "   "
+        << " Length"
+
+        << "\n";
+        for (int i = 0; i < 27; ++i) 
+        {
+            cout << "- ";
+        }
+        cout << "\n";
+        for (const auto& line : line3Dobjects) 
+        {
+            cout << line << "   "  << fixed << setprecision(3) << line.getScalarValue() << "\n";
+        }
+    } else {
+        cout << "Invalid mode specified.\n";
     }
-    return false; // Default case
 }
 
 
@@ -724,101 +795,34 @@ int main()
                 cout << "filtering criteria: " << mode2 << "\n";
                 cout << "sorting criteria: " << mode3 << "\n";
                 cout << "sorting order: " << mode4 << "\n\n";
-
-                // Print objects based on mode2
-                if (mode2 == "Point2D") 
-                {
-                    cout 
-                    << " " << setw(4) << right << "X" 
-                    << "  " << setw(4) << right << "Y"
-                    << "   "
-                    << " Length"
-                    << "\n";
-                    for (int i = 0; i < 27; ++i) 
-                    {
-                        cout << "- ";
-                    }
-                    cout << "\n";
-                    for (const auto& point : point2Dobjects) 
-                    {
-                        cout << point << "   "  << fixed << setprecision(3) << point.getScalarValue() << "\n";
-                    }
-                } 
-                else if (mode2 == "Point3D") 
-                {
-                    cout 
-                    << " " << setw(4) << right << "X" 
-                    << "  " << setw(4) << right << "Y"
-                    << "  " << setw(4) << right << "Z"
-                    << "   "
-                    << " Length"
-                    << "\n";
-                    for (int i = 0; i < 27; ++i) 
-                    {
-                        cout << "- ";
-                    }
-                    cout << "\n";
-                    for (const auto& point : point3Dobjects) 
-                    {
-                        cout << point << "   "  << fixed << setprecision(3) << point.getScalarValue() << "\n";
-                    }
-                } 
-                else if (mode2 == "Line2D") 
-                {
-                    cout 
-                    << " " << setw(4) << right << "P1-X" 
-                    << "  " << setw(4) << right << "P1-Y"
-                    << "   "
-                    << "  " << setw(4) << right << "P2-X" 
-                    << "  " << setw(4) << right << "P2-Y"
-                    << "   "
-                    << " Length"
-                    << "\n";
-                    for (int i = 0; i < 27; ++i) 
-                    {
-                        cout << "- ";
-                    }
-                    cout << "\n";
-                    for (const auto& line : line2Dobjects) 
-                    {
-                        cout << line << "   "  << fixed << setprecision(3) << line.getScalarValue() << "\n";
-                    }
-                } 
-                else if (mode2 == "Line3D") 
-                {
-                    cout 
-                    << " " << setw(4) << right << "P1-X" 
-                    << "  " << setw(4) << right << "P1-Y"
-                    << "  " << setw(4) << right << "P1-Z"
-                    << "   "
-                    << "  " << setw(4) << right << "P2-X" 
-                    << "  " << setw(4) << right << "P2-Y"
-                    << "  " << setw(4) << right << "P2-Z"
-                    << "   "
-                    << " Length"
-
-                    << "\n";
-                    for (int i = 0; i < 27; ++i) 
-                    {
-                        cout << "- ";
-                    }
-                    cout << "\n";
-                    for (const auto& line : line3Dobjects) 
-                    {
-                        cout << line << "   "  << fixed << setprecision(3) << line.getScalarValue() << "\n";
-                    }
-                } else {
-                    cout << "Invalid mode specified.\n";
-                }
-
-                break;
+                printObjects(mode2, point2Dobjects, point3Dobjects, line2Dobjects, line3Dobjects);
+                cout << "\n";
             }
             break;
 
             break;
-            case 6:
+            case 6: 
             {
-                cout << "hullo !";
+                cout << "Saving data to a text file...\n";
+                string filename = mode2 + ".txt"; // Construct the file name based on mode2 value
+                ofstream outputFile(filename); // Open the file for writing
+                if (!outputFile.is_open()) {
+                    cout << "Error: Unable to open file for writing.\n";
+                    break;
+                }
+
+                // Redirect standard output to the file
+                streambuf* original_cout = cout.rdbuf(); // Save original cout buffer
+                cout.rdbuf(outputFile.rdbuf()); // Redirect cout to file
+
+                // Call the printing function to print objects to the file
+                printObjects(mode2, point2Dobjects, point3Dobjects, line2Dobjects, line3Dobjects);
+
+                // Restore standard output
+                cout.rdbuf(original_cout); // Restore original cout buffer
+                outputFile.close(); // Close the file
+
+                cout << "Data saved to file: " << filename << "\n";
             }
             break;
             case 7:
