@@ -720,30 +720,91 @@ int main()
             break;
             case 5:
             {
-                cout << "\n[View Data...]\n";
+                cout << "\n\n[View Data...]\n\n";
                 cout << "filtering criteria: " << mode2 << "\n";
                 cout << "sorting criteria: " << mode3 << "\n";
-                cout << "sorting order: " << mode4 << "\n";
+                cout << "sorting order: " << mode4 << "\n\n";
 
                 // Print objects based on mode2
-                if (mode2 == "Point2D") {
-                    cout << "\nContents of Point2D objects:\n";
-                    for (const auto& point : point2Dobjects) {
+                if (mode2 == "Point2D") 
+                {
+                    cout 
+                    << " " << setw(4) << right << "X" 
+                    << "  " << setw(4) << right << "Y"
+                    << "   "
+                    << " Length"
+                    << "\n";
+                    for (int i = 0; i < 27; ++i) 
+                    {
+                        cout << "- ";
+                    }
+                    cout << "\n";
+                    for (const auto& point : point2Dobjects) 
+                    {
                         cout << point << "   "  << fixed << setprecision(3) << point.getScalarValue() << "\n";
                     }
-                } else if (mode2 == "Point3D") {
-                    cout << "\nContents of Point3D objects:\n";
-                    for (const auto& point : point3Dobjects) {
+                } 
+                else if (mode2 == "Point3D") 
+                {
+                    cout 
+                    << " " << setw(4) << right << "X" 
+                    << "  " << setw(4) << right << "Y"
+                    << "  " << setw(4) << right << "Z"
+                    << "   "
+                    << " Length"
+                    << "\n";
+                    for (int i = 0; i < 27; ++i) 
+                    {
+                        cout << "- ";
+                    }
+                    cout << "\n";
+                    for (const auto& point : point3Dobjects) 
+                    {
                         cout << point << "   "  << fixed << setprecision(3) << point.getScalarValue() << "\n";
                     }
-                } else if (mode2 == "Line2D") {
-                    cout << "\nContents of Line2D objects:\n";
-                    for (const auto& line : line2Dobjects) {
+                } 
+                else if (mode2 == "Line2D") 
+                {
+                    cout 
+                    << " " << setw(4) << right << "P1-X" 
+                    << "  " << setw(4) << right << "P1-Y"
+                    << "   "
+                    << "  " << setw(4) << right << "P2-X" 
+                    << "  " << setw(4) << right << "P2-Y"
+                    << "   "
+                    << " Length"
+                    << "\n";
+                    for (int i = 0; i < 27; ++i) 
+                    {
+                        cout << "- ";
+                    }
+                    cout << "\n";
+                    for (const auto& line : line2Dobjects) 
+                    {
                         cout << line << "   "  << fixed << setprecision(3) << line.getScalarValue() << "\n";
                     }
-                } else if (mode2 == "Line3D") {
-                    cout << "\nContents of Line3D objects:\n";
-                    for (const auto& line : line3Dobjects) {
+                } 
+                else if (mode2 == "Line3D") 
+                {
+                    cout 
+                    << " " << setw(4) << right << "P1-X" 
+                    << "  " << setw(4) << right << "P1-Y"
+                    << "  " << setw(4) << right << "P1-Z"
+                    << "   "
+                    << "  " << setw(4) << right << "P2-X" 
+                    << "  " << setw(4) << right << "P2-Y"
+                    << "  " << setw(4) << right << "P2-Z"
+                    << "   "
+                    << " Length"
+
+                    << "\n";
+                    for (int i = 0; i < 27; ++i) 
+                    {
+                        cout << "- ";
+                    }
+                    cout << "\n";
+                    for (const auto& line : line3Dobjects) 
+                    {
                         cout << line << "   "  << fixed << setprecision(3) << line.getScalarValue() << "\n";
                     }
                 } else {
