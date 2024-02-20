@@ -205,13 +205,13 @@ string formatPoint(const PointType& point)
 {
     ostringstream oss;
     oss << "["
-        << setw(4) << right << static_cast<int>(point.getX()) << ", "
-        << setw(4) << right << static_cast<int>(point.getY());  
+        << setw(4) << right  << static_cast<int>(point.getX()) << ", "
+        << setw(4) << right  << static_cast<int>(point.getY());  
 
     // For Point3D, also include the z-coordinate
     if constexpr (is_same_v<PointType, Point3D>) 
     {
-        oss << ", " << setw(4) << right << static_cast<int>(point.getZ());
+        oss << ", " << setw(4) << static_cast<int>(point.getZ());
     }
 
     oss << "]";
@@ -338,25 +338,6 @@ bool equals(const T& value1, const T& value2)
 {
     return value1 == value2;
 }
-
-
-
-
-// ----------------------------------------------------IO manipulators
-// formats to 2 Decimal places
-ostream& twodec(ostream& os) 
-{
-    os << fixed << setprecision(2);
-    return os;
-}
-
-// formats to 3 Decimal places
-ostream& threedec(ostream& os) 
-{
-    os << fixed << setprecision(3);
-    return os;
-}
-
 
 
 
@@ -560,39 +541,28 @@ int main()
                     cout << "\n\nContents of point2Dobjects:\n";
                     for (const auto& point : point2Dobjects) 
                     {
-                        cout << point << "\t" << point.getScalarValue() << "\n";
+                        cout << point << "   "  << fixed << setprecision(3) << point.getScalarValue() << "\n";
                     }
 
                     cout << "\n\nContents of point3Dobjects:\n";
                     for (const auto& point : point3Dobjects) {
-                        cout << point << "\t" << point.getScalarValue() << "\n";
-                    }
-
-                    cout << "\n\nContents of temp vector :\n";
-                    for (const auto& thing : temppoint2Dobjects) {
-                        cout << thing << endl;
+                        cout << point << "   "  << fixed << setprecision(3) << point.getScalarValue() << "\n";
                     }
 
                     cout << "\n\n\nContents of LINE 2D :\n";
                     for (const auto& thing : line2Dobjects) {
-                        cout << thing << "\t" << thing.getScalarValue()<< "\n";
+                        cout << thing << "   "  << fixed << setprecision(3) << thing.getScalarValue() << "\n";
                     }
 
                     cout << "\n\nContents of LINE 3Dobjects:\n";
                     for (auto& line : line3Dobjects) 
                     {
-                        cout << line << "\t" << line.getScalarValue()<< "\n";
+                        cout << line << "   "  << fixed << setprecision(3) << line.getScalarValue() << "\n";
                     }
 
 
 
-                    
-
-
-
-
-                    
-
+       
 
                     cout << "Going back to main menu...";
                 }      
