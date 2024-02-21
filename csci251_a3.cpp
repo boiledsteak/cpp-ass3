@@ -263,7 +263,7 @@ bool comparePoints(const PointType& p1, const PointType& p2)
 }
 
 template<typename PointType>
-double diff(const PointType& p1, const PointType& p2) 
+double diff(const PointType p1, const PointType p2) 
 {
     return p1.getScalarValue() - p2.getScalarValue();
 }
@@ -333,7 +333,7 @@ bool operator==(Line2D l1, Line2D l2)
 
 bool operator==(Line3D l1, Line3D l2)
 {
-    return l1 == l2;
+    return (l1.getPt1() == l2.getPt1()) && (l1.getPt2() == l2.getPt2());
 }
 
 double operator-(Line2D l1, Line2D l2)
@@ -774,18 +774,23 @@ int main()
                     }
 
 
-                    cout << "\n\nTesting equals \n";
-                    Point2D testp2d_1(10, 20);
-                    Point2D testp2d_2(30, 40);
-                    Line2D testl2d(testp2d_1, testp2d_2);
+                    cout << "\n\nTesting equals and scalar_difference\n";
+                    Point3D testp3d_1(10, 20, 30);
+                    Point3D testp3d_2(30, 40, 50);
+                    Line3D testl3d(testp3d_1, testp3d_2);
 
-                    cout << "This is the testing line2D\n";
-                    cout << testl2d << "\n";
+                    cout << "This is the testing line3D\n";
+                    cout << testl3d << "\n";
 
-                    if (equals(testl2d,testl2d))
+                    if (equals(testl3d,testl3d))
                     {
                         cout << "Yep they are equal \n\n";
                     }
+                    cout << "This is scalar diff\n\n";
+                    cout << scalar_difference(testl3d, testl3d) << "\n\n";
+                    
+
+                    
 
 
 
