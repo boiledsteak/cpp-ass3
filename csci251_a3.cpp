@@ -19,6 +19,7 @@
 #include <set>
 #include <memory>
 #include <variant>
+#include <map>
 
 
 using namespace std;
@@ -182,6 +183,7 @@ class Line3D : public Line2D
     private:
         Point3D pt1; 
         Point3D pt2;
+        // inherited variable from line2d -> length
 
     protected:
         // Calculate length of the line for Line3D
@@ -224,6 +226,8 @@ class Line3D : public Line2D
         {
             pt2 = pt2_val;
         }
+
+        // inherited function from line2d -> getscalarvalue
 };
 
 // ----------------------------------------------------OPERATOR OVERLOADS
@@ -303,6 +307,27 @@ bool operator-(Point3D p1, Point3D p2)
 
 
 
+// bool operator<(const Point2D p1, const Point2D p2)
+// {
+//     return p1.getY() < p2.getY();
+// }
+
+// bool operator>(const Point2D p1, const Point2D p2)
+// {
+//     return p1.getY() > p2.getY();
+// }
+
+// bool operator<(const Point3D p1, const Point3D p2)
+// {
+//     return p1.getZ() < p2.getZ();
+// }
+
+// bool operator>(const Point3D p1, const Point3D p2)
+// {
+//     return p1.getZ() > p2.getZ();
+// }
+
+
 // ------------FOR LINES
 
 template<typename LineType>
@@ -375,25 +400,39 @@ bool equals(const T& value1, const T& value2)
 template<typename ObjectType>
 void sortObjects(vector<ObjectType>& objects, const string& mode3, const string& mode4) 
 {
-    // atm only works for line3d
+    // atm only works for line3d aka mode2 = line3d
     if (mode3 == "Pt. 1") 
     {
         if (mode4 == "ASC") 
         {
             // Sort based on Pt. 1 in ascending order
-            sort(objects.begin(), objects.end(), [](const auto& obj1, const auto& obj2) {
-                // Implement comparison logic based on Pt. 1
-                // Example:
-                return obj1.getPt1() < obj2.getPt1();
+            sort(objects.begin(), objects.end(), []( auto obj1, auto obj2) 
+            {
+                auto pt1 = obj1.getPt1();
+                auto pt2 = obj2.getPt1();
+                
+                if (pt1.getX() == pt2.getX()) 
+                {
+                    // If X values are equal, compare by Y values
+                    return pt1.getY() < pt2.getY();
+                }
+                return pt1.getX() < pt2.getX();
             });
         } 
         else if (mode4 == "DSC") 
         {
             // Sort based on Pt. 1 in descending order
-            sort(objects.begin(), objects.end(), [](const auto& obj1, const auto& obj2) {
-                // Implement comparison logic based on Pt. 1
-                // Example:
-                return obj1.getPt1() > obj2.getPt1();
+            sort(objects.begin(), objects.end(), []( auto obj1, auto obj2) 
+            {
+                auto pt1 = obj1.getPt1();
+                auto pt2 = obj2.getPt1();
+                
+                if (pt1.getX() == pt2.getX()) 
+                {
+                    // If X values are equal, compare by Y values
+                    return pt1.getY() > pt2.getY();
+                }
+                return pt1.getX() > pt2.getX();
             });
         }
     } 
@@ -402,19 +441,33 @@ void sortObjects(vector<ObjectType>& objects, const string& mode3, const string&
         if (mode4 == "ASC") 
         {
             // Sort based on Pt. 2 in ascending order
-            sort(objects.begin(), objects.end(), [](const auto& obj1, const auto& obj2) {
-                // Implement comparison logic based on Pt. 2
-                // Example:
-                return obj1.getPt2() < obj2.getPt2();
+            sort(objects.begin(), objects.end(), []( auto obj1, auto obj2) 
+            {
+                auto pt1 = obj1.getPt2();
+                auto pt2 = obj2.getPt2();
+                
+                if (pt1.getX() == pt2.getX()) 
+                {
+                    // If X values are equal, compare by Y values
+                    return pt1.getY() < pt2.getY();
+                }
+                return pt1.getX() < pt2.getX();
             });
         } 
         else if (mode4 == "DSC") 
         {
             // Sort based on Pt. 2 in descending order
-            sort(objects.begin(), objects.end(), [](const auto& obj1, const auto& obj2) {
-                // Implement comparison logic based on Pt. 2
-                // Example:
-                return obj1.getPt2() > obj2.getPt2();
+            sort(objects.begin(), objects.end(), []( auto obj1, auto obj2) 
+            {
+                auto pt1 = obj1.getPt2();
+                auto pt2 = obj2.getPt2();
+                
+                if (pt1.getX() == pt2.getX()) 
+                {
+                    // If X values are equal, compare by Y values
+                    return pt1.getY() > pt2.getY();
+                }
+                return pt1.getX() > pt2.getX();
             });
         }
     } 
@@ -423,18 +476,16 @@ void sortObjects(vector<ObjectType>& objects, const string& mode3, const string&
         if (mode4 == "ASC") 
         {
             // Sort based on Length in ascending order
-            sort(objects.begin(), objects.end(), [](const auto& obj1, const auto& obj2) {
-                // Implement comparison logic based on Length
-                // Example:
+            sort(objects.begin(), objects.end(), [](const auto& obj1, const auto& obj2) 
+            {
                 return obj1.getScalarValue() < obj2.getScalarValue();
             });
         } 
         else if (mode4 == "DSC") 
         {
             // Sort based on Length in descending order
-            sort(objects.begin(), objects.end(), [](const auto& obj1, const auto& obj2) {
-                // Implement comparison logic based on Length
-                // Example:
+            sort(objects.begin(), objects.end(), [](const auto& obj1, const auto& obj2) 
+            {
                 return obj1.getScalarValue() > obj2.getScalarValue();
             });
         }
@@ -443,10 +494,8 @@ void sortObjects(vector<ObjectType>& objects, const string& mode3, const string&
 
 
 // Function to print objects based on mode2
-void printObjects(const string& mode2, const vector<Point2D>& point2Dobjects,const vector<Point3D>& point3Dobjects, const vector<Line2D>& line2Dobjects, const vector<Line3D>& line3Dobjects) 
+void printObjects(const string& mode2, auto objects) 
 {
-    
-
     if (mode2 == "Point2D") 
     {
         cout 
@@ -460,7 +509,7 @@ void printObjects(const string& mode2, const vector<Point2D>& point2Dobjects,con
             cout << "- ";
         }
         cout << "\n";
-        for (const auto& point : point2Dobjects) 
+        for (const auto& point : objects) 
         {
             cout << point << "   "  << fixed << setprecision(3) << point.getScalarValue() << "\n";
         }
@@ -479,7 +528,7 @@ void printObjects(const string& mode2, const vector<Point2D>& point2Dobjects,con
             cout << "- ";
         }
         cout << "\n";
-        for (const auto& point : point3Dobjects) 
+        for (const auto& point : objects) 
         {
             cout << point << "   "  << fixed << setprecision(3) << point.getScalarValue() << "\n";
         }
@@ -500,7 +549,7 @@ void printObjects(const string& mode2, const vector<Point2D>& point2Dobjects,con
             cout << "- ";
         }
         cout << "\n";
-        for (const auto& line : line2Dobjects) 
+        for (const auto& line : objects) 
         {
             cout << line << "   "  << fixed << setprecision(3) << line.getScalarValue() << "\n";
         }
@@ -524,7 +573,7 @@ void printObjects(const string& mode2, const vector<Point2D>& point2Dobjects,con
             cout << "- ";
         }
         cout << "\n";
-        for (const auto& line : line3Dobjects) 
+        for (const auto& line : objects) 
         {
             cout << line << "   "  << fixed << setprecision(3) << line.getScalarValue() << "\n";
         }
@@ -1007,12 +1056,32 @@ int main()
             break;
             case 5:
             {
-                // sortObjects(line3Dobjects, mode3, mode4);
+                
+                
                 cout << "\n\n[View Data...]\n\n";
                 cout << "filtering criteria: " << mode2 << "\n";
                 cout << "sorting criteria: " << mode3 << "\n";
                 cout << "sorting order: " << mode4 << "\n\n";
-                printObjects(mode2, point2Dobjects, point3Dobjects, line2Dobjects, line3Dobjects);
+                if (mode2 == "Point2D")
+                {
+                    // sortObjects(point2Dobjects, mode3, mode4);
+                    printObjects(mode2, point2Dobjects);
+                }
+                else if (mode2 == "Point3D")
+                {
+                    // sortObjects(point3Dobjects, mode3, mode4);
+                    printObjects(mode2, point3Dobjects);
+                }
+                else if (mode2 == "Line2D")
+                {
+                    sortObjects(line2Dobjects, mode3, mode4);
+                    printObjects(mode2, line2Dobjects);
+                }
+                else if (mode2 == "Line3D")
+                {
+                    sortObjects(line3Dobjects, mode3, mode4);   
+                    printObjects(mode2, line3Dobjects);
+                }
                 cout << "\n";
             }
             break;
@@ -1036,7 +1105,7 @@ int main()
                 cout.rdbuf(outputFile.rdbuf()); // Redirect cout to file
 
                 // Call the printing function to print objects to the file
-                printObjects(mode2, point2Dobjects, point3Dobjects, line2Dobjects, line3Dobjects);
+                // printObjects(mode2, point2Dobjects, point3Dobjects, line2Dobjects, line3Dobjects);
 
                 // Restore standard output
                 cout.rdbuf(original_cout); // Restore original cout buffer
