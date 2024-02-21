@@ -121,78 +121,110 @@ class Point3D : public Point2D
 };
 
 // Class Line2D
-class Line2D {
-private:
-    Point2D pt1;
-    Point2D pt2;
-    double length;
+class Line2D 
+{
+    private:
+        Point2D pt1; 
+        Point2D pt2;
+    protected:
+        double length; 
 
-    // Calculate length of the line
-    double calculateLength() const {
-        int deltaX = pt1.getX() - pt2.getX();
-        int deltaY = pt1.getY() - pt2.getY();
-        return sqrt(deltaX * deltaX + deltaY * deltaY);
-    }
+        // Calculate length of the line
+        void setLength() 
+        {
+            int deltaX = pt1.getX() - pt2.getX();
+            int deltaY = pt1.getY() - pt2.getY();
+            length = sqrt(deltaX * deltaX + deltaY * deltaY);
+        }
 
-public:
-    // Constructor
-    Line2D(Point2D pt1_val, Point2D pt2_val) : pt1(pt1_val), pt2(pt2_val) {
-        length = calculateLength();
-    }
+    public:
+        // Constructor
+        Line2D(Point2D pt1_val, Point2D pt2_val) : pt1(pt1_val), pt2(pt2_val) 
+        {
+            setLength(); // Calculate length for Line2D
+        }
 
-    // Getter for pt1
-    Point2D getPt1() const {
-        return pt1;
-    }
+        // Getter for length
+        double getScalarValue() const 
+        {
+            return length;
+        }
 
-    // Getter for pt2
-    Point2D getPt2() const {
-        return pt2;
-    }
+        // Getter for pt1
+        Point2D getPt1() const 
+        {
+            return pt1;
+        }
 
-    // Getter for length
-    double getScalarValue() const {
-        return length;
-    }
+        // Getter for pt2
+        Point2D getPt2() const 
+        {
+            return pt2;
+        }
+
+        // Setter for pt1
+        void setPt1(Point2D pt1_val) 
+        {
+            pt1 = pt1_val;
+        }
+
+        // Setter for pt2
+        void setPt2(Point2D pt2_val) 
+        {
+            pt2 = pt2_val;
+        }
 };
+
 
 // Class Line3D
-class Line3D {
-private:
-    Point3D pt1;
-    Point3D pt2;
+class Line3D : public Line2D 
+{
+    private:
+        Point3D pt1; 
+        Point3D pt2;
 
-    // Calculate length of the line
-    double calculateLength() const {
-        return sqrt(
-            ((pt1.getX() - pt2.getX()) * (pt1.getX() - pt2.getX())) +
-            ((pt1.getY() - pt2.getY()) * (pt1.getY() - pt2.getY())) +
-            ((pt1.getZ() - pt2.getZ()) * (pt1.getZ() - pt2.getZ()))
-        );
-    }
+    protected:
+        // Calculate length of the line for Line3D
+        void setLength() 
+        {
+            length = sqrt(
+                ((pt1.getX() - pt2.getX()) * (pt1.getX() - pt2.getX())) +
+                ((pt1.getY() - pt2.getY()) * (pt1.getY() - pt2.getY())) +
+                ((pt1.getZ() - pt2.getZ()) * (pt1.getZ() - pt2.getZ()))
+            );
+        }
 
-public:
-    // Constructor
-    Line3D(Point3D pt1_val, Point3D pt2_val) : pt1(pt1_val), pt2(pt2_val) {}
+    public:
+        // Constructor
+        Line3D(Point3D pt1_val, Point3D pt2_val) : Line2D(pt1_val, pt2_val), pt1(pt1_val), pt2(pt2_val) 
+        {
+            setLength();
+        }
 
-    // Getter for pt1
-    Point3D getPt1() const {
-        return pt1;
-    }
+        // Getter for pt1
+        Point3D getPt1() const 
+        {
+            return pt1;
+        }
 
-    // Getter for pt2
-    Point3D getPt2() const {
-        return pt2;
-    }
+        // Getter for pt2
+        Point3D getPt2() const 
+        {
+            return pt2;
+        }
 
-    // Getter for length
-    double getScalarValue() const {
-        return calculateLength();
-    }
+        // Setter for pt1
+        void setPt1(Point3D pt1_val) 
+        {
+            pt1 = pt1_val;
+        }
+
+        // Setter for pt2
+        void setPt2(Point3D pt2_val) 
+        {
+            pt2 = pt2_val;
+        }
 };
-
-
-
 
 // ----------------------------------------------------OPERATOR OVERLOADS
 
@@ -248,24 +280,23 @@ ostream& operator<<(ostream& os, const Point3D& point)
     return os;
 }
 
-bool operator==(Point2D &p1, Point2D &p2)
-{
-
-    return comparePoints(p1, p2);
-}
-
-bool operator==(Point3D &p1, Point3D &p2)
+bool operator==(Point2D p1, Point2D p2)
 {
     return comparePoints(p1, p2);
 }
 
-bool operator-(Point2D &p1, Point2D &p2)
+bool operator==(Point3D p1, Point3D p2)
+{
+    return comparePoints(p1, p2);
+}
+
+bool operator-(Point2D p1, Point2D p2)
 {
 
     return diff(p1, p2);
 }
 
-bool operator-(Point3D &p1, Point3D &p2)
+bool operator-(Point3D p1, Point3D p2)
 {
     return diff(p1, p2);
 }
@@ -295,22 +326,22 @@ ostream& operator<<(ostream& os, const Line3D& line)
 }
 
 
-bool operator==(Line2D &l1, Line2D &l2)
+bool operator==(Line2D l1, Line2D l2)
+{
+    return (l1.getPt1() == l2.getPt1()) && (l1.getPt2() == l2.getPt2());
+}
+
+bool operator==(Line3D l1, Line3D l2)
 {
     return l1 == l2;
 }
 
-bool operator==(Line3D &l1, Line3D &l2)
-{
-    return l1 == l2;
-}
-
-double operator-(Line2D &l1, Line2D &l2)
+double operator-(Line2D l1, Line2D l2)
 {
     return diff(l1,l2);
 }
 
-double operator-(Line3D &l1, Line3D &l2)
+double operator-(Line3D l1, Line3D l2)
 {
     return diff(l1,l2);
 }
@@ -344,6 +375,7 @@ bool equals(const T& value1, const T& value2)
 template<typename ObjectType>
 void sortObjects(vector<ObjectType>& objects, const string& mode3, const string& mode4) 
 {
+    // atm only works for line3d
     if (mode3 == "Pt. 1") 
     {
         if (mode4 == "ASC") 
@@ -740,6 +772,22 @@ int main()
                     {
                         cout << line << "   "  << fixed << setprecision(3) << line.getScalarValue() << "\n";
                     }
+
+
+                    cout << "\n\nTesting equals \n";
+                    Point2D testp2d_1(10, 20);
+                    Point2D testp2d_2(30, 40);
+                    Line2D testl2d(testp2d_1, testp2d_2);
+
+                    cout << "This is the testing line2D\n";
+                    cout << testl2d << "\n";
+
+                    if (equals(testl2d,testl2d))
+                    {
+                        cout << "Yep they are equal \n\n";
+                    }
+
+
 
 
 
