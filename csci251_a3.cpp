@@ -1,8 +1,4 @@
 // due 28 Feb
-// STL means standard template library
-// see slides S5B for template concept
-// function template ability : pass the datatype as a parameter and return different data type based on parameter
-// It is possible in C++ to get a special behavior for a particular data type. This is called template specialization
 #include <iostream>
 #include <utility>
 #include <vector>
@@ -19,7 +15,7 @@
 #include <set>
 #include <memory>
 #include <variant>
-#include <map>
+#include <cstdio>
 
 
 using namespace std;
@@ -80,10 +76,6 @@ class Point2D
         {
             y = y_val;
         }
-
-        
-
-        
 };
 
 
@@ -306,28 +298,6 @@ bool operator-(Point3D p1, Point3D p2)
 }
 
 
-
-// bool operator<(const Point2D p1, const Point2D p2)
-// {
-//     return p1.getY() < p2.getY();
-// }
-
-// bool operator>(const Point2D p1, const Point2D p2)
-// {
-//     return p1.getY() > p2.getY();
-// }
-
-// bool operator<(const Point3D p1, const Point3D p2)
-// {
-//     return p1.getZ() < p2.getZ();
-// }
-
-// bool operator>(const Point3D p1, const Point3D p2)
-// {
-//     return p1.getZ() > p2.getZ();
-// }
-
-
 // ------------FOR LINES
 
 template<typename LineType>
@@ -391,6 +361,8 @@ bool equals(const T& value1, const T& value2)
 {
     return value1 == value2;
 }
+
+
 
 
 
@@ -807,12 +779,7 @@ int main()
                     }
                     // Close the file after reading
                     file.close();
-                    // Display the unique lines read from the file
-                    cout << "\n\nUnique lines read from 'messy.txt':\n";
-                    for (const auto& l : lines)
-                    {
-                        cout << l << endl;
-                    }
+                  
                     // Print the number of rows after duplicates have been removed
                     cout << lines.size() << " records read in successfully\n";
                     
@@ -895,54 +862,6 @@ int main()
                             line3Dobjects.emplace_back(lobj);
                         }
                     }
-
-                    cout << "\n\nContents of point2Dobjects:\n";
-                    for (const auto& point : point2Dobjects) 
-                    {
-                        cout << point << "   "  << fixed << setprecision(3) << point.getScalarValue() << "\n";
-                    }
-
-                    cout << "\n\nContents of point3Dobjects:\n";
-                    for (const auto& point : point3Dobjects) {
-                        cout << point << "   "  << fixed << setprecision(3) << point.getScalarValue() << "\n";
-                    }
-
-                    cout << "\n\n\nContents of LINE 2D :\n";
-                    for (const auto& thing : line2Dobjects) {
-                        cout << thing << "   "  << fixed << setprecision(3) << thing.getScalarValue() << "\n";
-                    }
-
-                    cout << "\n\nContents of LINE 3Dobjects:\n";
-                    for (auto& line : line3Dobjects) 
-                    {
-                        cout << line << "   "  << fixed << setprecision(3) << line.getScalarValue() << "\n";
-                    }
-
-
-                    cout << "\n\nTesting equals and scalar_difference\n";
-                    Point3D testp3d_1(10, 20, 30);
-                    Point3D testp3d_2(30, 40, 50);
-                    Line3D testl3d(testp3d_1, testp3d_2);
-
-                    cout << "This is the testing line3D\n";
-                    cout << testl3d << "\n";
-
-                    if (equals(testl3d,testl3d))
-                    {
-                        cout << "Yep they are equal \n\n";
-                    }
-                    cout << "This is scalar diff\n\n";
-                    cout << scalar_difference(testl3d, testl3d) << "\n\n";
-                    
-
-                    
-
-
-
-
-
-       
-
                     cout << "Going back to main menu...";
                 }      
             }
@@ -1181,10 +1100,22 @@ int main()
                     sortObjects(line3Dobjects, mode3, mode4);   
                     printObjects(mode2, line3Dobjects);
                 }
+                cout << "\nPress any key to go back to main menu...";
                 cout << "\n";
+                cin.ignore(); // Ignore any characters in the input buffer
+                // Loop until the something is pressed
+                while (true) 
+                {
+                    char ch = cin.get();
+                    string str(1, ch); // get from input
+                    if (!str.empty()) 
+                    {
+                        // something entered. break out of the loop
+                        break;
+                    }
+                }
+                
             }
-            break;
-
             break;
             case 6:
             {
@@ -1204,7 +1135,26 @@ int main()
                 cout.rdbuf(outputFile.rdbuf()); // Redirect cout to file
 
                 // Call the printing function to print objects to the file
-                // printObjects(mode2, point2Dobjects, point3Dobjects, line2Dobjects, line3Dobjects);
+                if (mode2 == "Point2D")
+                {
+                    sortObjects(point2Dobjects, mode3, mode4);
+                    printObjects(mode2, point2Dobjects);
+                }
+                else if (mode2 == "Point3D")
+                {
+                    sortObjects(point3Dobjects, mode3, mode4);
+                    printObjects(mode2, point3Dobjects);
+                }
+                else if (mode2 == "Line2D")
+                {
+                    sortObjects(line2Dobjects, mode3, mode4);
+                    printObjects(mode2, line2Dobjects);
+                }
+                else if (mode2 == "Line3D")
+                {
+                    sortObjects(line3Dobjects, mode3, mode4);   
+                    printObjects(mode2, line3Dobjects);
+                }
 
                 // Restore standard output
                 cout.rdbuf(original_cout); // Restore original cout buffer
